@@ -1,4 +1,4 @@
-# 🦄✨ LisaFrankUI — A Maximalist Design System 🌈🐬
+# 🦄✨ UnicornMagic — A Maximalist Design System 🌈🐬
 
 Neon rainbow gradients, holographic foil, glitter, sparkles, dolphins, unicorns,
 shooting stars, and kawaii energy — wrapped around a disciplined token system so the
