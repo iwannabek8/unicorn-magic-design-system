@@ -1,0 +1,232 @@
+/* ============================================================
+   ✨🌈 LISA FRANK DESIGN SYSTEM — DESIGN TOKENS 🦄💖
+   The single source of truth for all the magic.
+   Maximalist on the outside, disciplined on the inside.
+   ============================================================ */
+
+:root {
+  /* --------------------------------------------------------
+     🎨 CORE PALETTE — neon rainbow, candy brights
+     -------------------------------------------------------- */
+  --lf-pink-hot: #ff2e9a;       /* hot bubblegum */
+  --lf-pink-bubble: #ff7ac8;    /* soft cotton candy */
+  --lf-magenta: #d6149c;
+  --lf-purple: #9b4dff;         /* unicorn purple */
+  --lf-violet: #6a2cff;
+  --lf-blue-sky: #2ec5ff;       /* dolphin sky */
+  --lf-blue-electric: #1597ff;
+  --lf-cyan: #00f0ff;           /* mermaid cyan */
+  --lf-teal: #1fffce;
+  --lf-green-lime: #8dff3a;     /* slime lime */
+  --lf-yellow: #ffe93a;         /* shooting-star yellow */
+  --lf-orange: #ff9a3a;         /* sherbet orange */
+  --lf-coral: #ff5a6e;
+
+  /* Neutrals (kept playful but readable) */
+  --lf-ink: #2a0a3d;            /* deep grape — primary text */
+  --lf-ink-soft: #5a3a72;       /* muted grape — secondary text */
+  --lf-cloud: #fff5fb;          /* near-white pink tint */
+  --lf-cloud-2: #ffeaf7;        /* card surface */
+  --lf-white: #ffffff;
+  --lf-shadow-grape: rgba(42, 10, 61, 0.18);
+
+  /* --------------------------------------------------------
+     🌈 GRADIENTS — the heart of the whole vibe
+     -------------------------------------------------------- */
+  --lf-grad-rainbow: linear-gradient(
+    100deg,
+    var(--lf-pink-hot) 0%,
+    var(--lf-orange) 18%,
+    var(--lf-yellow) 34%,
+    var(--lf-green-lime) 50%,
+    var(--lf-cyan) 66%,
+    var(--lf-violet) 84%,
+    var(--lf-pink-hot) 100%
+  );
+  --lf-grad-rainbow-soft: linear-gradient(
+    120deg,
+    #ffd6f2 0%,
+    #ffe9c7 25%,
+    #d9ffd1 50%,
+    #c9f4ff 75%,
+    #e6d6ff 100%
+  );
+  --lf-grad-sunset: linear-gradient(135deg, var(--lf-pink-hot), var(--lf-orange), var(--lf-yellow));
+  --lf-grad-cotton: linear-gradient(135deg, var(--lf-pink-bubble), var(--lf-purple), var(--lf-cyan));
+  --lf-grad-mermaid: linear-gradient(135deg, var(--lf-cyan), var(--lf-teal), var(--lf-violet));
+  --lf-grad-unicorn: linear-gradient(135deg, var(--lf-pink-hot), var(--lf-purple), var(--lf-blue-electric));
+  --lf-grad-dolphin: linear-gradient(160deg, var(--lf-blue-sky), var(--lf-cyan), var(--lf-teal));
+
+  /* Holographic / iridescent foil */
+  --lf-grad-holo: linear-gradient(
+    115deg,
+    #ffb3ec 0%,
+    #b3e6ff 20%,
+    #c8ffd4 40%,
+    #fff4b3 55%,
+    #ffb3c8 70%,
+    #d4b3ff 85%,
+    #b3fff0 100%
+  );
+
+  /* Conic rainbow for spinning sparkle bits */
+  --lf-grad-conic: conic-gradient(
+    from 0deg,
+    var(--lf-pink-hot),
+    var(--lf-orange),
+    var(--lf-yellow),
+    var(--lf-green-lime),
+    var(--lf-cyan),
+    var(--lf-violet),
+    var(--lf-pink-hot)
+  );
+
+  /* Dreamy page background wash */
+  --lf-grad-dreamscape: radial-gradient(circle at 12% 18%, rgba(255, 122, 200, 0.55), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(46, 197, 255, 0.5), transparent 40%),
+    radial-gradient(circle at 78% 82%, rgba(155, 77, 255, 0.5), transparent 44%),
+    radial-gradient(circle at 22% 88%, rgba(141, 255, 58, 0.42), transparent 42%),
+    linear-gradient(135deg, #fff0fa 0%, #f3e8ff 50%, #e6fbff 100%);
+
+  /* --------------------------------------------------------
+     ✒️ TYPOGRAPHY — bubbly display + readable body
+     -------------------------------------------------------- */
+  --lf-font-display: 'Baloo 2', 'Comic Sans MS', 'Trebuchet MS', system-ui, sans-serif;
+  --lf-font-body: 'Quicksand', 'Trebuchet MS', system-ui, sans-serif;
+
+  --lf-text-2xs: 0.72rem;
+  --lf-text-xs: 0.82rem;
+  --lf-text-sm: 0.94rem;
+  --lf-text-md: 1.06rem;
+  --lf-text-lg: 1.3rem;
+  --lf-text-xl: 1.75rem;
+  --lf-text-2xl: 2.4rem;
+  --lf-text-3xl: 3.4rem;
+  --lf-text-4xl: 4.8rem;
+
+  --lf-weight-normal: 500;
+  --lf-weight-bold: 700;
+  --lf-weight-black: 800;
+
+  --lf-leading-tight: 1.1;
+  --lf-leading-snug: 1.3;
+  --lf-leading-normal: 1.55;
+
+  --lf-tracking-wide: 0.04em;
+  --lf-tracking-wider: 0.12em;
+
+  /* --------------------------------------------------------
+     📐 SPACING — 4px base scale
+     -------------------------------------------------------- */
+  --lf-space-1: 0.25rem;
+  --lf-space-2: 0.5rem;
+  --lf-space-3: 0.75rem;
+  --lf-space-4: 1rem;
+  --lf-space-5: 1.5rem;
+  --lf-space-6: 2rem;
+  --lf-space-7: 3rem;
+  --lf-space-8: 4rem;
+  --lf-space-9: 6rem;
+
+  /* --------------------------------------------------------
+     🟣 RADII — bubbly and round, never sharp
+     -------------------------------------------------------- */
+  --lf-radius-sm: 0.5rem;
+  --lf-radius-md: 0.9rem;
+  --lf-radius-lg: 1.4rem;
+  --lf-radius-xl: 2rem;
+  --lf-radius-pill: 999px;
+  --lf-radius-blob: 42% 58% 63% 37% / 41% 44% 56% 59%;
+
+  /* --------------------------------------------------------
+     ☁️ SHADOWS & GLOWS
+     -------------------------------------------------------- */
+  --lf-shadow-sm: 0 4px 10px var(--lf-shadow-grape);
+  --lf-shadow-md: 0 10px 26px rgba(42, 10, 61, 0.2);
+  --lf-shadow-lg: 0 22px 50px rgba(42, 10, 61, 0.28);
+  --lf-glow-pink: 0 0 22px rgba(255, 46, 154, 0.65);
+  --lf-glow-cyan: 0 0 22px rgba(0, 240, 255, 0.6);
+  --lf-glow-purple: 0 0 22px rgba(155, 77, 255, 0.6);
+  --lf-glow-rainbow: 0 0 18px rgba(255, 46, 154, 0.5), 0 0 36px rgba(0, 240, 255, 0.4);
+
+  /* --------------------------------------------------------
+     ⏱️ MOTION
+     -------------------------------------------------------- */
+  --lf-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --lf-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --lf-dur-fast: 140ms;
+  --lf-dur-base: 260ms;
+  --lf-dur-slow: 520ms;
+
+  /* --------------------------------------------------------
+     🔢 Z-INDEX
+     -------------------------------------------------------- */
+  --lf-z-base: 1;
+  --lf-z-sticker: 5;
+  --lf-z-nav: 50;
+  --lf-z-overlay: 90;
+  --lf-z-modal: 100;
+  --lf-z-tooltip: 150;
+  --lf-z-sparkle: 200;
+}
+
+/* ============================================================
+   🌌 GALAXY DARK MODE — token overrides
+   Neon accents glow harder against a deep cosmic canvas.
+   Activate with <html data-theme="galaxy">.
+   ============================================================ */
+[data-theme='galaxy'] {
+  /* Re-map neutrals to deep space */
+  --lf-ink: #f3e9ff;            /* starlight text */
+  --lf-ink-soft: #b9a7e0;       /* muted lavender */
+  --lf-cloud: #1a0b2e;          /* deep cosmos */
+  --lf-cloud-2: #261144;        /* card surface */
+  --lf-white: #2a1450;          /* "surface white" → dark panel */
+  --lf-shadow-grape: rgba(0, 0, 0, 0.5);
+
+  /* Punchier glows for the dark backdrop */
+  --lf-glow-pink: 0 0 26px rgba(255, 46, 154, 0.8);
+  --lf-glow-cyan: 0 0 26px rgba(0, 240, 255, 0.75);
+  --lf-glow-purple: 0 0 26px rgba(155, 77, 255, 0.8);
+  --lf-glow-rainbow: 0 0 22px rgba(255, 46, 154, 0.65), 0 0 44px rgba(0, 240, 255, 0.55);
+
+  --lf-shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.55);
+  --lf-shadow-md: 0 12px 30px rgba(0, 0, 0, 0.6);
+  --lf-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.7);
+
+  /* Cosmic page wash: nebula glows over a starfield navy */
+  --lf-grad-dreamscape: radial-gradient(circle at 12% 18%, rgba(255, 46, 154, 0.35), transparent 40%),
+    radial-gradient(circle at 88% 12%, rgba(0, 240, 255, 0.3), transparent 38%),
+    radial-gradient(circle at 78% 82%, rgba(155, 77, 255, 0.4), transparent 42%),
+    radial-gradient(circle at 22% 88%, rgba(46, 197, 255, 0.28), transparent 40%),
+    linear-gradient(160deg, #160a2e 0%, #1d0b3d 50%, #0e0820 100%);
+
+  /* Softer foil so it doesn't blow out on dark */
+  --lf-grad-holo: linear-gradient(
+    115deg,
+    #ff8fd8 0%,
+    #8fd6ff 20%,
+    #9fffc0 40%,
+    #ffe98f 55%,
+    #ff8fb0 70%,
+    #c08fff 85%,
+    #8fffe0 100%
+  );
+}
+
+/* Starfield overlay for galaxy mode (decorative) */
+[data-theme='galaxy'] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 80% 20%, rgba(200, 240, 255, 0.9), transparent),
+    radial-gradient(1px 1px at 40% 85%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 90% 60%, rgba(255, 230, 255, 0.85), transparent),
+    radial-gradient(1px 1px at 10% 60%, rgba(255, 255, 255, 0.75), transparent);
+  background-size: 100% 100%;
+}

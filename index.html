@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🦄 Lisa Frank Design System ✨🌈</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/effects.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <style>
+    /* Page-local glue only — everything reusable lives in the system files */
+    .lf-hero {
+      position: relative;
+      text-align: center;
+      padding-block: var(--lf-space-9) var(--lf-space-8);
+    }
+    .lf-hero h1 { font-size: clamp(2.6rem, 7vw, var(--lf-text-4xl)); }
+    .lf-hero p { margin-inline: auto; font-size: var(--lf-text-lg); }
+    .lf-btn-row { display: flex; flex-wrap: wrap; gap: var(--lf-space-4); justify-content: center; margin-top: var(--lf-space-5); }
+    .lf-divider {
+      height: 8px; border: none; margin-block: var(--lf-space-8);
+      background: var(--lf-grad-rainbow); background-size: 200% auto;
+      border-radius: var(--lf-radius-pill); animation: lf-rainbow-shift 5s linear infinite;
+    }
+    .section-head { margin-bottom: var(--lf-space-5); }
+    .demo-row { display: flex; flex-wrap: wrap; gap: var(--lf-space-4); align-items: center; }
+    footer { text-align: center; padding-block: var(--lf-space-8); }
+  </style>
+</head>
+<body>
+
+  <!-- ✨ Decorative sparkle field (aria-hidden) -->
+  <div aria-hidden="true">
+    <span class="lf-star" style="top: 14%; left: 8%;">⭐</span>
+    <span class="lf-star" style="top: 30%; right: 10%; animation-delay: .6s;">🌟</span>
+    <span class="lf-sparkle" style="top: 22%; left: 22%;"></span>
+    <span class="lf-sparkle" style="top: 48%; right: 16%; animation-delay: 1s;"></span>
+    <span class="lf-shooting-star" style="top: 12%; left: 40%;"></span>
+    <span class="lf-shooting-star" style="top: 26%; left: 6%; animation-delay: 1.6s;"></span>
+  </div>
+
+  <!-- 🧭 NAV -->
+  <nav class="lf-nav lf-ring">
+    <div class="lf-nav__brand"><span class="lf-bob">🦄</span> <span class="lf-text-gradient">LisaFrankUI</span></div>
+    <div class="lf-nav__links">
+      <a href="#colors">Colors</a>
+      <a href="#type">Type</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#cards">Cards</a>
+      <a href="#forms">Forms</a>
+      <button class="lf-theme-toggle" id="themeToggle" aria-pressed="false">
+        <span id="themeIcon">🌙</span> <span id="themeLabel">Galaxy</span>
+      </button>
+      <a class="lf-btn lf-btn--sm lf-btn--rainbow" href="#get-started">Get Magic ✨</a>
+    </div>
+  </nav>
+
+  <!-- 🌈 HERO -->
+  <header class="lf-hero lf-container">
+    <span class="lf-eyebrow">A maximalist design system</span>
+    <h1><span class="lf-text-gradient">Sparkle-Powered</span><br />Design System 🌈🐬</h1>
+    <p class="lf-muted">Neon rainbow gradients, holographic foil, glitter, unicorns &amp; dolphins —
+      nostalgic 90s chaos with modern UX clarity baked right in.</p>
+    <div class="lf-btn-row" id="get-started">
+      <button class="lf-btn lf-btn--rainbow lf-btn--lg">Start Sparkling ✨</button>
+      <button class="lf-btn lf-btn--ghost lf-btn--lg lf-ring">View Components 🌟</button>
+    </div>
+    <div class="demo-row" style="justify-content:center; margin-top: var(--lf-space-6);">
+      <span class="lf-sticker" style="--lf-tilt:-4deg;">🐬 Dolphin Dreams</span>
+      <span class="lf-sticker" style="--lf-tilt:3deg;">🦄 Unicorn Mode</span>
+      <span class="lf-sticker" style="--lf-tilt:-2deg;">🌈 Rainbow Ready</span>
+    </div>
+  </header>
+
+  <main class="lf-container">
+
+    <!-- 🎨 COLORS -->
+    <section class="lf-section" id="colors">
+      <div class="section-head">
+        <span class="lf-eyebrow">Foundations</span>
+        <h2>🎨 Color &amp; Gradients</h2>
+        <p class="lf-muted">Candy-bright neons plus dreamy multi-stop gradients. Text uses deep grape for AA contrast.</p>
+      </div>
+      <div class="lf-grid">
+        <div class="lf-swatch" style="background: var(--lf-grad-rainbow);">Rainbow <code>--lf-grad-rainbow</code></div>
+        <div class="lf-swatch" style="background: var(--lf-grad-unicorn);">Unicorn <code>--lf-grad-unicorn</code></div>
+        <div class="lf-swatch" style="background: var(--lf-grad-dolphin);">Dolphin <code>--lf-grad-dolphin</code></div>
+        <div class="lf-swatch" style="background: var(--lf-grad-mermaid);">Mermaid <code>--lf-grad-mermaid</code></div>
+        <div class="lf-swatch" style="background: var(--lf-grad-sunset);">Sunset <code>--lf-grad-sunset</code></div>
+        <div class="lf-swatch lf-holo">Holographic <code>.lf-holo</code></div>
+      </div>
+      <div class="lf-grid" style="margin-top: var(--lf-space-4);">
+        <div class="lf-swatch" style="background: var(--lf-pink-hot);">Hot Pink <code>#ff2e9a</code></div>
+        <div class="lf-swatch" style="background: var(--lf-purple);">Unicorn Purple <code>#9b4dff</code></div>
+        <div class="lf-swatch" style="background: var(--lf-cyan); color: var(--lf-ink); text-shadow:none;">Mermaid Cyan <code>#00f0ff</code></div>
+        <div class="lf-swatch" style="background: var(--lf-green-lime); color: var(--lf-ink); text-shadow:none;">Slime Lime <code>#8dff3a</code></div>
+        <div class="lf-swatch" style="background: var(--lf-yellow); color: var(--lf-ink); text-shadow:none;">Star Yellow <code>#ffe93a</code></div>
+        <div class="lf-swatch" style="background: var(--lf-orange);">Sherbet <code>#ff9a3a</code></div>
+      </div>
+    </section>
+
+    <hr class="lf-divider" />
+
+    <!-- ✒️ TYPOGRAPHY -->
+    <section class="lf-section" id="type">
+      <div class="section-head">
+        <span class="lf-eyebrow">Foundations</span>
+        <h2>✒️ Typography</h2>
+        <p class="lf-muted">Bubbly <strong>Baloo 2</strong> for display, friendly <strong>Quicksand</strong> for body.</p>
+      </div>
+      <div class="lf-card lf-glitter">
+        <h1 class="lf-text-gradient">Aa Bb Cc 123</h1>
+        <h2 class="lf-text-holo">Holographic Heading</h2>
+        <h3>Bubble Subheading 🫧</h3>
+        <p>Body copy stays calm and readable so the magic never hurts comprehension. Quicksand keeps
+          things rounded and friendly while maintaining a comfortable reading rhythm at <code>1.55</code> line height.</p>
+        <div class="demo-row" style="margin-top: var(--lf-space-3);">
+          <span class="lf-badge">Display: Baloo 2</span>
+          <span class="lf-badge lf-badge--cyan">Body: Quicksand</span>
+          <span class="lf-badge lf-badge--purple">Scale: 1.33 ratio</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="lf-divider" />
+
+    <!-- 🔘 BUTTONS -->
+    <section class="lf-section" id="buttons">
+      <div class="section-head">
+        <span class="lf-eyebrow">Components</span>
+        <h2>🔘 Buttons</h2>
+      </div>
+      <div class="demo-row">
+        <button class="lf-btn lf-btn--rainbow">Rainbow</button>
+        <button class="lf-btn lf-btn--sunset">Sunset</button>
+        <button class="lf-btn lf-btn--mermaid">Mermaid</button>
+        <button class="lf-btn lf-btn--dolphin">Dolphin</button>
+        <button class="lf-btn lf-btn--ghost lf-ring">Ghost Ring</button>
+      </div>
+      <div class="demo-row" style="margin-top: var(--lf-space-4);">
+        <button class="lf-btn lf-btn--sm lf-btn--rainbow">Small ✨</button>
+        <button class="lf-btn lf-btn--rainbow">Default 🌈</button>
+        <button class="lf-btn lf-btn--lg lf-btn--rainbow">Large 🦄</button>
+      </div>
+    </section>
+
+    <hr class="lf-divider" />
+
+    <!-- 🃏 CARDS -->
+    <section class="lf-section" id="cards">
+      <div class="section-head">
+        <span class="lf-eyebrow">Components</span>
+        <h2>🃏 Cards</h2>
+      </div>
+      <div class="lf-grid">
+        <article class="lf-card lf-glitter">
+          <span class="lf-card__emoji lf-bob">🐬</span>
+          <h3 class="lf-card__title">Dolphin Card</h3>
+          <p class="lf-muted">A glittery surface card. Hover for a playful tilt and lift.</p>
+          <span class="lf-badge lf-badge--cyan" style="margin-top: var(--lf-space-3);">New</span>
+        </article>
+        <article class="lf-card lf-card--gradient">
+          <span class="lf-card__emoji lf-float">🦄</span>
+          <h3 class="lf-card__title">Gradient Card</h3>
+          <p>Cotton-candy gradient surface with white text for punchy promos.</p>
+        </article>
+        <article class="lf-card lf-card--holo lf-glitter">
+          <span class="lf-card__emoji lf-spin">🌈</span>
+          <h3 class="lf-card__title">Holographic Card</h3>
+          <p class="lf-muted">Iridescent animated foil that shifts as you scroll.</p>
+        </article>
+      </div>
+    </section>
+
+    <hr class="lf-divider" />
+
+    <!-- ⌨️ FORMS -->
+    <section class="lf-section" id="forms">
+      <div class="section-head">
+        <span class="lf-eyebrow">Components</span>
+        <h2>⌨️ Forms &amp; Feedback</h2>
+      </div>
+      <div class="lf-grid">
+        <div class="lf-card lf-stack">
+          <div class="lf-field">
+            <label class="lf-label" for="name">Your magical name 🌟</label>
+            <input class="lf-input" id="name" type="text" placeholder="Sparkle McRainbow" />
+          </div>
+          <div class="lf-field">
+            <label class="lf-label" for="wish">Make a wish 🪄</label>
+            <textarea class="lf-textarea" id="wish" placeholder="I wish for infinite glitter..."></textarea>
+          </div>
+          <div class="demo-row">
+            <label class="lf-toggle"><input type="checkbox" checked /><span class="lf-toggle__track"></span></label>
+            <span class="lf-label">Unicorn mode</span>
+          </div>
+          <button class="lf-btn lf-btn--rainbow">Cast Spell ✨</button>
+        </div>
+        <div class="lf-stack">
+          <div class="lf-alert">🎉 <span>Success! Your sparkles have been saved.</span></div>
+          <div class="lf-alert lf-alert--cyan">🐬 <span>Heads up — dolphins incoming.</span></div>
+          <div class="lf-alert lf-alert--lime">🦄 <span>Pro tip: hover everything.</span></div>
+          <div class="lf-stack">
+            <span class="lf-label">Magic level</span>
+            <div class="lf-progress"><div class="lf-progress__bar" style="width: 88%;"></div></div>
+          </div>
+          <div class="demo-row">
+            <span class="lf-badge">Sparkly</span>
+            <span class="lf-badge lf-badge--cyan">Dreamy</span>
+            <span class="lf-badge lf-badge--purple">Magical</span>
+            <span class="lf-badge lf-badge--lime">Kawaii</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="lf-divider" />
+
+    <!-- 🗂️ TABS / 🪟 MODAL / 💬 TOOLTIP -->
+    <section class="lf-section" id="overlays">
+      <div class="section-head">
+        <span class="lf-eyebrow">Components</span>
+        <h2>🗂️ Tabs, Modal &amp; Tooltip</h2>
+      </div>
+
+      <!-- Tabs -->
+      <div class="lf-tabs" id="demoTabs">
+        <div class="lf-tabs__list" role="tablist" aria-label="Magical worlds">
+          <button class="lf-tab" role="tab" aria-selected="true" aria-controls="panel-unicorns" id="tab-unicorns">🦄 Unicorns</button>
+          <button class="lf-tab" role="tab" aria-selected="false" aria-controls="panel-dolphins" id="tab-dolphins">🐬 Dolphins</button>
+          <button class="lf-tab" role="tab" aria-selected="false" aria-controls="panel-stars" id="tab-stars">⭐ Stars</button>
+        </div>
+        <div class="lf-tabs__panel is-active" role="tabpanel" id="panel-unicorns" aria-labelledby="tab-unicorns">
+          <div class="lf-card lf-glitter"><h3 class="lf-card__title">🦄 Unicorn realm</h3><p class="lf-muted">Tabs swap content with a soft fade. Fully keyboard accessible with arrow keys.</p></div>
+        </div>
+        <div class="lf-tabs__panel" role="tabpanel" id="panel-dolphins" aria-labelledby="tab-dolphins" hidden>
+          <div class="lf-card lf-glitter"><h3 class="lf-card__title">🐬 Dolphin lagoon</h3><p class="lf-muted">Splashing through cyan gradients in the second panel.</p></div>
+        </div>
+        <div class="lf-tabs__panel" role="tabpanel" id="panel-stars" aria-labelledby="tab-stars" hidden>
+          <div class="lf-card lf-glitter"><h3 class="lf-card__title">⭐ Star meadow</h3><p class="lf-muted">Wishing on the third panel under a shooting-star sky.</p></div>
+        </div>
+      </div>
+
+      <!-- Modal + Tooltip triggers -->
+      <div class="demo-row" style="margin-top: var(--lf-space-5);">
+        <button class="lf-btn lf-btn--rainbow" id="openModal">Open magic modal 🪄</button>
+        <span class="lf-tooltip" tabindex="0">
+          <span class="lf-sticker" style="--lf-tilt:0deg;">Hover me 💬</span>
+          <span class="lf-tooltip__bubble" role="tooltip">Sprinkled with magic ✨</span>
+        </span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 🪟 MODAL -->
+  <div class="lf-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="lf-modal lf-glitter">
+      <button class="lf-modal__close" id="closeModal" aria-label="Close">✕</button>
+      <span class="lf-modal__emoji lf-bob">🦄</span>
+      <h3 class="lf-modal__title" id="modalTitle">A wild unicorn appears!</h3>
+      <p class="lf-muted">This dialog traps focus, closes on Escape or backdrop click, and springs in with a bouncy pop.</p>
+      <div class="lf-modal__actions">
+        <button class="lf-btn lf-btn--rainbow" id="acceptModal">Accept magic ✨</button>
+        <button class="lf-btn lf-btn--ghost lf-ring" id="dismissModal">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="lf-container">
+    <hr class="lf-divider" />
+    <p class="lf-text-gradient" style="font-family: var(--lf-font-display); font-weight: 800; font-size: var(--lf-text-xl);">
+      Stay sparkly ✨🦄🌈🐬💖
+    </p>
+    <p class="lf-muted">LisaFrankUI — a maximalist design system with modern UX clarity.</p>
+  </footer>
+
+  <script>
+    // 🌗 Theme toggle (light ⇆ galaxy), remembered in localStorage
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      const saved = localStorage.getItem('lf-theme');
+      if (saved === 'galaxy') setTheme('galaxy');
+
+      function setTheme(theme) {
+        const galaxy = theme === 'galaxy';
+        root.setAttribute('data-theme', galaxy ? 'galaxy' : '');
+        btn.setAttribute('aria-pressed', String(galaxy));
+        icon.textContent = galaxy ? '☀️' : '🌙';
+        label.textContent = galaxy ? 'Daydream' : 'Galaxy';
+        localStorage.setItem('lf-theme', galaxy ? 'galaxy' : 'light');
+      }
+      btn.addEventListener('click', () =>
+        setTheme(root.getAttribute('data-theme') === 'galaxy' ? 'light' : 'galaxy')
+      );
+    })();
+
+    // 🗂️ Accessible tabs (click + arrow keys)
+    (function () {
+      const tabs = Array.from(document.querySelectorAll('#demoTabs .lf-tab'));
+      const panels = Array.from(document.querySelectorAll('#demoTabs .lf-tabs__panel'));
+      function select(i) {
+        tabs.forEach((t, j) => {
+          const on = i === j;
+          t.setAttribute('aria-selected', String(on));
+          t.tabIndex = on ? 0 : -1;
+          panels[j].classList.toggle('is-active', on);
+          panels[j].hidden = !on;
+        });
+        tabs[i].focus();
+      }
+      tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => select(i));
+        tab.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') select((i + 1) % tabs.length);
+          if (e.key === 'ArrowLeft') select((i - 1 + tabs.length) % tabs.length);
+        });
+      });
+    })();
+
+    // 🪟 Modal (open/close, Escape, backdrop, focus management)
+    (function () {
+      const overlay = document.getElementById('modal');
+      const open = document.getElementById('openModal');
+      const closers = ['closeModal', 'dismissModal', 'acceptModal'].map((id) => document.getElementById(id));
+      let lastFocus = null;
+      function show() {
+        lastFocus = document.activeElement;
+        overlay.hidden = false;
+        requestAnimationFrame(() => overlay.classList.add('is-open'));
+        document.getElementById('closeModal').focus();
+      }
+      function hide() {
+        overlay.classList.remove('is-open');
+        setTimeout(() => { overlay.hidden = true; }, 260);
+        if (lastFocus) lastFocus.focus();
+      }
+      open.addEventListener('click', show);
+      closers.forEach((c) => c.addEventListener('click', hide));
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) hide(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay.classList.contains('is-open')) hide(); });
+    })();
+  </script>
+
+</body>
+</html>

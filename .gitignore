@@ -1,0 +1,16 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Logs & dependencies (in case the project grows)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+*.log
+
+# Build output
+dist/
+build/

@@ -1,0 +1,178 @@
+/* ============================================================
+   🦄✨ EFFECTS — holographic foil, glitter, sparkles, stars
+   Decorative layer. All effects are aria-hidden friendly and
+   collapse gracefully under prefers-reduced-motion.
+   ============================================================ */
+
+/* --------------------------------------------------------
+   KEYFRAMES
+   -------------------------------------------------------- */
+@keyframes lf-rainbow-shift {
+  to { background-position: 200% center; }
+}
+
+@keyframes lf-holo-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes lf-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes lf-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+  50%      { opacity: 1;   transform: scale(1.1) rotate(45deg); }
+}
+
+@keyframes lf-float {
+  0%, 100% { transform: translateY(0) rotate(var(--lf-tilt, 0deg)); }
+  50%      { transform: translateY(-12px) rotate(var(--lf-tilt, 0deg)); }
+}
+
+@keyframes lf-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+@keyframes lf-shoot {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate(360px, 180px) scale(0.2); opacity: 0; }
+}
+
+@keyframes lf-glitter-drift {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to   { background-position: 220px 320px, -180px 260px, 140px -220px; }
+}
+
+/* --------------------------------------------------------
+   HOLOGRAPHIC FOIL SURFACE
+   -------------------------------------------------------- */
+.lf-holo {
+  background: var(--lf-grad-holo);
+  background-size: 300% 300%;
+  animation: lf-holo-shift 8s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+.lf-holo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.55) 48%, transparent 60%);
+  background-size: 250% 250%;
+  animation: lf-holo-shift 5s ease infinite reverse;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------
+   GLITTER TEXTURE OVERLAY (apply to any surface)
+   -------------------------------------------------------- */
+.lf-glitter {
+  position: relative;
+}
+.lf-glitter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.95) 1px, transparent 1.5px),
+    radial-gradient(rgba(255, 233, 58, 0.9) 1px, transparent 1.5px),
+    radial-gradient(rgba(0, 240, 255, 0.85) 1px, transparent 1.5px);
+  background-size: 36px 36px, 52px 52px, 44px 44px;
+  background-position: 0 0, 18px 22px, 30px 8px;
+  animation: lf-glitter-drift 14s linear infinite;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+/* --------------------------------------------------------
+   SPARKLES & STARS (decorative emoji/CSS stickers)
+   -------------------------------------------------------- */
+.lf-sparkle {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: var(--lf-grad-conic);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  animation: lf-twinkle 2.4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: var(--lf-z-sparkle);
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+.lf-star {
+  position: absolute;
+  color: var(--lf-yellow);
+  font-size: 1.4rem;
+  animation: lf-twinkle 3s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(255, 233, 58, 0.8));
+}
+
+/* Shooting star — a glowing dot with a trailing tail */
+.lf-shooting-star {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lf-white);
+  box-shadow: 0 0 12px 3px rgba(255, 255, 255, 0.9);
+  animation: lf-shoot 3.2s ease-in infinite;
+  pointer-events: none;
+}
+.lf-shooting-star::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 90px;
+  height: 2px;
+  transform: translateY(-50%) rotate(27deg);
+  transform-origin: right center;
+  background: linear-gradient(90deg, transparent, var(--lf-cyan), var(--lf-pink-hot));
+  border-radius: var(--lf-radius-pill);
+}
+
+/* Floating sticker wrapper */
+.lf-float { animation: lf-float 5s var(--lf-ease-smooth) infinite; }
+.lf-bob   { animation: lf-bob 2.6s var(--lf-ease-smooth) infinite; }
+.lf-spin  { animation: lf-spin 9s linear infinite; }
+
+/* Holographic text shimmer */
+.lf-text-holo {
+  background: var(--lf-grad-holo);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: lf-holo-shift 7s ease infinite;
+}
+
+/* Rainbow animated border ring */
+.lf-ring {
+  position: relative;
+  border-radius: inherit;
+  isolation: isolate;
+}
+.lf-ring::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  padding: 3px;
+  background: var(--lf-grad-conic);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  background-size: 200% auto;
+  z-index: -1;
+}
+
+/* Opt-in spinning ring for when you DO want the motion */
+.lf-ring--spin::before { animation: lf-spin 6s linear infinite; }

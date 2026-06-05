@@ -1,0 +1,126 @@
+/* ============================================================
+   🌈 BASE — resets, typography defaults, page canvas
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--lf-font-body);
+  font-weight: var(--lf-weight-normal);
+  font-size: var(--lf-text-md);
+  line-height: var(--lf-leading-normal);
+  color: var(--lf-ink);
+  background: var(--lf-grad-dreamscape);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Bubbly display headings */
+h1, h2, h3, h4 {
+  font-family: var(--lf-font-display);
+  font-weight: var(--lf-weight-black);
+  line-height: var(--lf-leading-tight);
+  letter-spacing: var(--lf-tracking-wide);
+  color: var(--lf-ink);
+}
+
+h1 { font-size: var(--lf-text-3xl); }
+h2 { font-size: var(--lf-text-2xl); }
+h3 { font-size: var(--lf-text-xl); }
+h4 { font-size: var(--lf-text-lg); }
+
+p { max-width: 65ch; }
+
+a {
+  color: var(--lf-magenta);
+  font-weight: var(--lf-weight-bold);
+  text-decoration: none;
+  transition: color var(--lf-dur-fast) var(--lf-ease-smooth);
+}
+a:hover { color: var(--lf-violet); }
+
+:focus-visible {
+  outline: 3px dashed var(--lf-violet);
+  outline-offset: 3px;
+  border-radius: var(--lf-radius-sm);
+}
+
+/* Selection sparkle */
+::selection {
+  background: var(--lf-pink-hot);
+  color: var(--lf-white);
+}
+
+/* Scrollbar candy */
+::-webkit-scrollbar { width: 14px; height: 14px; }
+::-webkit-scrollbar-track { background: var(--lf-cloud-2); }
+::-webkit-scrollbar-thumb {
+  background: var(--lf-grad-unicorn);
+  border-radius: var(--lf-radius-pill);
+  border: 3px solid var(--lf-cloud-2);
+}
+
+/* --- Layout helpers --- */
+.lf-container {
+  width: min(1180px, 92vw);
+  margin-inline: auto;
+}
+
+.lf-section {
+  padding-block: var(--lf-space-8);
+}
+
+.lf-stack > * + * { margin-top: var(--lf-space-4); }
+
+.lf-grid {
+  display: grid;
+  gap: var(--lf-space-5);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* --- Gradient & utility text --- */
+.lf-text-gradient {
+  background: var(--lf-grad-rainbow);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: lf-rainbow-shift 6s linear infinite;
+}
+
+.lf-text-center { text-align: center; }
+.lf-muted { color: var(--lf-ink-soft); }
+.lf-eyebrow {
+  font-family: var(--lf-font-display);
+  font-weight: var(--lf-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--lf-tracking-wider);
+  font-size: var(--lf-text-sm);
+  color: var(--lf-magenta);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
