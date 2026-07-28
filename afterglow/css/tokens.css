@@ -101,16 +101,17 @@
   );
 
   /* Page wash — opacity of the dreamy multi-radial scales with vibe.
-     At vibe 0: near-white paper. At vibe 1: full UnicornMagic dreamscape. */
+     At vibe 0: near-white paper. At vibe 1: full UnicornMagic dreamscape.
+     The linear base pushes toward candy pink as vibe rises. */
   --ag-grad-page:
     radial-gradient(circle at 12% 18%, rgba(255, 122, 200, calc(0.55 * var(--ag-vibe))), transparent 42%),
     radial-gradient(circle at 88% 12%, rgba(46, 197, 255,  calc(0.5  * var(--ag-vibe))), transparent 40%),
     radial-gradient(circle at 78% 82%, rgba(155, 77, 255,  calc(0.5  * var(--ag-vibe))), transparent 44%),
     radial-gradient(circle at 22% 88%, rgba(141, 255, 58,  calc(0.42 * var(--ag-vibe))), transparent 42%),
     linear-gradient(135deg,
-      color-mix(in oklab, #fafafa, #fff0fa calc(var(--ag-vibe) * 100%)) 0%,
-      color-mix(in oklab, #f7f7f9, #f3e8ff calc(var(--ag-vibe) * 100%)) 50%,
-      color-mix(in oklab, #f5f7fa, #e6fbff calc(var(--ag-vibe) * 100%)) 100%);
+      color-mix(in oklab, #fafafa, #ffe4f4 calc(var(--ag-vibe) * 100%)) 0%,
+      color-mix(in oklab, #f7f7f9, #f0dfff calc(var(--ag-vibe) * 100%)) 50%,
+      color-mix(in oklab, #f5f7fa, #dcf6ff calc(var(--ag-vibe) * 100%)) 100%);
 
   /* ========================================================
      LAYER 2 — SEMANTIC TOKENS

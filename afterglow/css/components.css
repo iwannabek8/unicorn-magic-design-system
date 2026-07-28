@@ -976,28 +976,6 @@ kbd, .ag-kbd {
 [data-vibe-tier='calm'] .ag-spin,
 [data-vibe-tier='calm'] .ag-float { animation: none; }
 
-/* Auto-apply rainbow ring to nav and ghost buttons at party tier — UM signature */
-[data-vibe-tier='party'] .ag-nav,
-[data-vibe-tier='party'] .ag-btn--ghost {
-  position: relative;
-  isolation: isolate;
-}
-[data-vibe-tier='party'] .ag-nav::before,
-[data-vibe-tier='party'] .ag-btn--ghost::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: inherit;
-  padding: 3px;
-  background: var(--ag-grad-conic);
-  background-size: 200% auto;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-          mask-composite: exclude;
-  z-index: -1;
-  animation: ag-ring-spin 6s linear infinite;
-}
-
 /* Focus ring — pink dashed at party tier, matching UM */
 [data-vibe-tier='party'] :focus-visible {
   outline: 3px dashed var(--ag-violet);
