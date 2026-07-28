@@ -975,4 +975,12 @@ kbd, .ag-kbd {
 [data-vibe-tier='calm'] .ag-spin,
 [data-vibe-tier='calm'] .ag-float { animation: none; }
 
+/* Decorative emojis are hidden entirely at calm tier.
+   Mark any decorative emoji with <span class="ag-emoji" aria-hidden="true">…</span>.
+   Card emojis and alert icons are already semantically decorative — hidden too. */
+[data-vibe-tier='calm'] .ag-emoji,
+[data-vibe-tier='calm'] .ag-card__emoji,
+[data-vibe-tier='calm'] .ag-alert__icon { display: none; }
+[data-vibe-tier='calm'] .ag-alert { grid-template-columns: 1fr auto; }
+
 /* Focus ring stays visible — accessibility trumps aesthetic */
