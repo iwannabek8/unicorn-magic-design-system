@@ -87,11 +87,6 @@
         <input id="vibe-slider" type="range" min="0" max="1" step="0.01" value="0.55" />
         <span id="vibe-readout" class="vibe-mini__readout">0.55</span>
       </label>
-      <select id="theme-select" class="ag-select" style="width: auto; padding: 0.35em 0.8em; font-size: var(--ag-text-xs);" aria-label="Theme">
-        <option value="">Daylight</option>
-        <option value="twilight">Twilight</option>
-        <option value="highcontrast">High contrast</option>
-      </select>
       <a class="ag-btn ag-btn--sm ag-btn--rainbow" href="#get-started">Get Magic <span class="ag-emoji" aria-hidden="true">✨</span></a>
     </div>
   </nav>
@@ -324,7 +319,7 @@
     </p>
     <p class="ag-muted">Afterglow — a design system with a saturation knob. A grown-up sibling of <a href="../">UnicornMagic</a>.</p>
     <p class="ag-muted" style="margin-top: var(--ag-space-2); font-size: var(--ag-text-xs);">
-      <kbd>Alt</kbd> + <kbd>V</kbd> cycles vibe presets · <kbd>Alt</kbd> + <kbd>T</kbd> cycles themes
+      <kbd>Alt</kbd> + <kbd>V</kbd> cycles vibe presets
     </p>
   </footer>
 
@@ -333,7 +328,6 @@
       const root = document.documentElement;
       const slider = document.getElementById('vibe-slider');
       const readout = document.getElementById('vibe-readout');
-      const themeSel = document.getElementById('theme-select');
 
       const setVibe = (v) => {
         v = Math.max(0, Math.min(1, +v));
@@ -347,20 +341,13 @@
         slider.value = v;
         localStorage.setItem('ag-vibe', v);
       };
-      const setTheme = (t) => {
-        if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
-        themeSel.value = t || '';
-        localStorage.setItem('ag-theme', t || '');
-      };
 
       slider.addEventListener('input', (e) => setVibe(e.target.value));
       document.querySelectorAll('[data-vibe-preset]').forEach((btn) => {
         btn.addEventListener('click', () => setVibe(btn.dataset.vibePreset));
       });
-      themeSel.addEventListener('change', (e) => setTheme(e.target.value));
 
       setVibe(localStorage.getItem('ag-vibe') ?? 0.55);
-      setTheme(localStorage.getItem('ag-theme') || '');
 
       // Sparkle-on-save demo
       const saveBtn = document.getElementById('btn-save');
@@ -375,14 +362,12 @@
         tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
       }));
 
-      // Keyboard shortcuts
+      // Keyboard shortcut — Alt+V cycles vibe presets
       const presets = [0, 0.3, 0.55, 0.8, 1];
-      const themes = ['', 'twilight', 'highcontrast'];
-      let vi = 2, ti = 0;
+      let vi = 2;
       window.addEventListener('keydown', (e) => {
         if (!e.altKey) return;
         if (e.key.toLowerCase() === 'v') { vi = (vi + 1) % presets.length; setVibe(presets[vi]); }
-        if (e.key.toLowerCase() === 't') { ti = (ti + 1) % themes.length;  setTheme(themes[ti]); }
       });
     })();
   </script>
