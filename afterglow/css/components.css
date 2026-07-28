@@ -836,8 +836,143 @@ kbd, .ag-kbd {
   background: var(--ag-white) center/60% no-repeat;
 }
 
-/* Focus ring — pink dashed at party tier, matching UM */
-[data-vibe-tier='party'] :focus-visible {
-  outline: 3px dashed var(--ag-violet);
-  outline-offset: 3px;
+/* ================================================
+   ★ CALM-TIER OVERRIDES ★
+   Applied by JS when vibe <= 0.10 via <html data-vibe-tier="calm">.
+   The mirror-image of party-tier: strip gradients to near-grayscale,
+   flatten loud variants to solid surfaces, hide decoration.
+   You should have to squint to see anything colorful.
+   ================================================ */
+
+/* Kill ambient decoration entirely */
+[data-vibe-tier='calm'] .ag-star,
+[data-vibe-tier='calm'] .ag-shooting-star,
+[data-vibe-tier='calm'] .ag-glitter::before { opacity: 0 !important; }
+
+/* Rainbow text collapses to solid ink */
+[data-vibe-tier='calm'] .ag-text-gradient,
+[data-vibe-tier='calm'] .ag-text-holo {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--ag-color-ink);
+  animation: none;
 }
+
+/* Rainbow / sunset / mermaid / dolphin buttons → solid ink button */
+[data-vibe-tier='calm'] .ag-btn--rainbow,
+[data-vibe-tier='calm'] .ag-btn--sunset,
+[data-vibe-tier='calm'] .ag-btn--mermaid,
+[data-vibe-tier='calm'] .ag-btn--dolphin {
+  background: var(--ag-color-ink);
+  color: var(--ag-color-ink-inverse);
+  animation: none;
+  box-shadow: var(--ag-shadow-xs);
+  text-shadow: none;
+  filter: none;
+}
+[data-vibe-tier='calm'] .ag-btn--rainbow:hover,
+[data-vibe-tier='calm'] .ag-btn--sunset:hover,
+[data-vibe-tier='calm'] .ag-btn--mermaid:hover,
+[data-vibe-tier='calm'] .ag-btn--dolphin:hover {
+  background: var(--ag-color-ink-muted);
+  box-shadow: var(--ag-shadow-sm);
+}
+
+/* Primary button → same treatment; no gradient */
+[data-vibe-tier='calm'] .ag-btn--primary {
+  background: var(--ag-color-ink);
+  color: var(--ag-color-ink-inverse);
+  filter: none;
+  box-shadow: var(--ag-shadow-xs);
+}
+
+/* Loud card variants → flat surfaces with a hairline border */
+[data-vibe-tier='calm'] .ag-card--gradient,
+[data-vibe-tier='calm'] .ag-card--holo {
+  background: var(--ag-color-surface);
+  color: var(--ag-color-ink);
+  border: 1px solid var(--ag-color-border);
+  animation: none;
+  filter: none;
+}
+[data-vibe-tier='calm'] .ag-card--gradient .ag-card__title,
+[data-vibe-tier='calm'] .ag-card--gradient p,
+[data-vibe-tier='calm'] .ag-card--holo .ag-card__title,
+[data-vibe-tier='calm'] .ag-card--holo p { color: var(--ag-color-ink); }
+[data-vibe-tier='calm'] .ag-card--gradient .ag-muted,
+[data-vibe-tier='calm'] .ag-card--holo .ag-muted { color: var(--ag-color-ink-muted); }
+
+/* Swatch tiles — the "here's what a gradient looks like" demos
+   still exist so the token names read, but bleached to near-mono */
+[data-vibe-tier='calm'] .ag-swatch-tile {
+  filter: saturate(0.08);
+  color: var(--ag-color-ink);
+  text-shadow: none;
+  box-shadow: var(--ag-shadow-xs);
+  opacity: 0.55;
+}
+[data-vibe-tier='calm'] .ag-swatch-tile code { color: var(--ag-color-ink-muted); }
+
+/* Sticker → plain white pill, no rotation, no peel shadow */
+[data-vibe-tier='calm'] .ag-sticker {
+  background: var(--ag-color-surface);
+  color: var(--ag-color-ink);
+  border: 1px solid var(--ag-color-border);
+  box-shadow: none;
+  transform: none !important;
+  filter: none;
+  font-family: var(--ag-font-body);
+  font-weight: var(--ag-weight-medium);
+  border-radius: var(--ag-radius-md);
+}
+
+/* Nav brand rainbow → solid ink */
+[data-vibe-tier='calm'] .ag-nav__brand { color: var(--ag-color-ink); }
+
+/* Divider → thin gray line */
+[data-vibe-tier='calm'] .ag-divider {
+  height: 1px;
+  background: var(--ag-color-border);
+  animation: none;
+  filter: none;
+  border-radius: 0;
+}
+
+/* Progress bar → solid dark bar */
+[data-vibe-tier='calm'] .ag-progress__bar,
+[data-vibe-tier='calm'] .ag-progress--rainbow .ag-progress__bar {
+  background: var(--ag-color-ink);
+  filter: none;
+  animation: none;
+}
+
+/* Badge cyan/purple/lime → neutral chip */
+[data-vibe-tier='calm'] .ag-badge--cyan,
+[data-vibe-tier='calm'] .ag-badge--purple,
+[data-vibe-tier='calm'] .ag-badge--lime {
+  background: var(--ag-color-surface-sunk);
+  color: var(--ag-color-ink-muted);
+  border: 1px solid var(--ag-color-border);
+}
+
+/* Toggle track when on → solid ink, not gradient */
+[data-vibe-tier='calm'] .ag-toggle input:checked ~ .ag-toggle__track {
+  background: var(--ag-color-ink);
+  filter: none;
+}
+
+/* Holo table header → plain surface */
+[data-vibe-tier='calm'] .ag-table--holo thead th {
+  background: var(--ag-color-surface-sunk);
+  color: var(--ag-color-ink-muted);
+  filter: none;
+}
+
+/* Bob / spin / float animations all pause (already do via --ag-vibe-anim-play,
+   but belt-and-suspenders for anything using the animation directly) */
+[data-vibe-tier='calm'] .ag-bob,
+[data-vibe-tier='calm'] .ag-spin,
+[data-vibe-tier='calm'] .ag-float { animation: none; }
+
+/* Focus ring stays visible — accessibility trumps aesthetic */
