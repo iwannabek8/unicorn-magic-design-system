@@ -37,8 +37,13 @@
               color var(--ag-motion-acknowledge);
   box-shadow: var(--ag-shadow-xs);
 }
-.ag-btn:hover  { transform: translateY(-1px); box-shadow: var(--ag-shadow-sm); }
-.ag-btn:active { transform: translateY(0); box-shadow: var(--ag-shadow-xs); }
+/* Hover intensity scales with vibe */
+.ag-btn:hover {
+  transform: translateY(calc(-1px - var(--ag-vibe) * 2px))
+             scale(calc(1 + var(--ag-vibe) * 0.03));
+  box-shadow: var(--ag-shadow-sm);
+}
+.ag-btn:active { transform: translateY(0) scale(0.98); box-shadow: var(--ag-shadow-xs); }
 .ag-btn:disabled,
 .ag-btn[aria-disabled='true'] {
   opacity: 0.5;
@@ -96,19 +101,48 @@
   animation-play-state: var(--ag-vibe-anim-play);
 }
 
+/* Extra gradient variants — sunset / mermaid / dolphin */
+.ag-btn--sunset {
+  --_btn-bg: var(--ag-grad-sunset);
+  --_btn-ink: var(--ag-white);
+  --_btn-border: transparent;
+  background-size: 180% auto;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.ag-btn--mermaid {
+  --_btn-bg: var(--ag-grad-mermaid);
+  --_btn-ink: var(--ag-white);
+  --_btn-border: transparent;
+  background-size: 180% auto;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.ag-btn--dolphin {
+  --_btn-bg: var(--ag-grad-dolphin);
+  --_btn-ink: var(--ag-grape-800);
+  --_btn-border: transparent;
+  background-size: 180% auto;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+
 /* ================================================
    CARDS
    ================================================ */
 .ag-card {
   background: var(--ag-color-surface);
   color: var(--ag-color-ink);
-  border: 1px solid var(--ag-color-border);
+  border: calc(1px + var(--ag-vibe) * 2px) solid var(--ag-color-border);
   border-radius: var(--ag-radius-lg);
   padding: var(--ag-space-5);
   box-shadow: var(--ag-shadow-sm);
   transition: box-shadow var(--ag-motion-transition), transform var(--ag-motion-transition);
 }
-.ag-card:hover { box-shadow: var(--ag-shadow-md); transform: translateY(-2px); }
+.ag-card:hover {
+  box-shadow: var(--ag-shadow-md);
+  transform: translateY(calc(-2px - var(--ag-vibe) * 4px))
+             rotate(calc(var(--ag-vibe) * -0.6deg));
+}
 
 .ag-card__header {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -130,6 +164,36 @@
     linear-gradient(var(--ag-color-surface), var(--ag-color-surface)) padding-box,
     var(--ag-color-accent-gradient) border-box;
   border: 2px solid transparent;
+}
+
+/* Full-fill gradient card — for punchy promos */
+.ag-card--gradient {
+  background: var(--ag-grad-cotton);
+  color: var(--ag-white);
+  border-color: transparent;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+.ag-card--gradient .ag-card__title,
+.ag-card--gradient p { color: var(--ag-white); }
+.ag-card--gradient .ag-muted { color: rgba(255, 255, 255, 0.85); }
+
+/* Holographic animated foil card */
+.ag-card--holo {
+  background: var(--ag-grad-holo);
+  background-size: 300% 300%;
+  color: var(--ag-grape-800);
+  border-color: transparent;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  animation: ag-holo-drift calc(9s / var(--ag-vibe-motion-amp)) var(--ag-ease-standard) infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+}
+
+/* Card-emoji block — big feature emoji at top of card */
+.ag-card__emoji {
+  font-size: var(--ag-text-2xl);
+  display: block;
+  margin-bottom: var(--ag-space-2);
+  filter: drop-shadow(0 3px 5px rgba(42, 10, 61, 0.2));
 }
 
 /* ================================================
@@ -154,6 +218,11 @@
 .ag-badge--warning { background: var(--ag-color-warning-soft); color: var(--ag-color-warning); border-color: transparent; }
 .ag-badge--danger  { background: var(--ag-color-danger-soft);  color: var(--ag-color-danger);  border-color: transparent; }
 .ag-badge--info    { background: var(--ag-color-info-soft);    color: var(--ag-color-info);    border-color: transparent; }
+
+/* Legacy-UM-parity variants — restrained at low vibe, gradient at party tier */
+.ag-badge--cyan   { background: var(--ag-color-info-soft);    color: var(--ag-color-info);    border-color: transparent; }
+.ag-badge--purple { background: var(--ag-color-accent-soft);  color: var(--ag-color-accent);  border-color: transparent; }
+.ag-badge--lime   { background: var(--ag-color-success-soft); color: var(--ag-color-success); border-color: transparent; }
 
 .ag-badge__dot {
   width: 0.5em; height: 0.5em; border-radius: 50%;
@@ -560,3 +629,350 @@ kbd, .ag-kbd {
   border-radius: var(--ag-radius-xs);
   line-height: 1.4;
 }
+
+/* ================================================
+   ★ PARTY-TIER OVERRIDES ★
+   Applied by JS when vibe >= 0.85 via <html data-vibe-tier="party">.
+   These are categorical moves the original UnicornMagic makes that
+   don't interpolate cleanly: pill radii, 3px pink input borders,
+   gradient badges, tilt-on-hover cards, upper-case display type.
+   Together with the font swap they should render vibe=1 as full UM.
+   ================================================ */
+
+/* Buttons — pill, display font, big bounce, rainbow hover glow */
+[data-vibe-tier='party'] .ag-btn {
+  border-radius: var(--ag-radius-pill);
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+  padding: 0.7em 1.8em;
+  text-shadow: 0 1px 2px rgba(42, 10, 61, 0.25);
+  border: none;
+  box-shadow: var(--ag-shadow-md);
+}
+[data-vibe-tier='party'] .ag-btn--primary,
+[data-vibe-tier='party'] .ag-btn--rainbow,
+[data-vibe-tier='party'] .ag-btn--danger { color: var(--ag-white); }
+[data-vibe-tier='party'] .ag-btn:hover {
+  box-shadow: var(--ag-shadow-lg), var(--ag-glow-rainbow);
+}
+[data-vibe-tier='party'] .ag-btn--ghost {
+  background: var(--ag-white);
+  color: var(--ag-magenta);
+  text-shadow: none;
+  box-shadow: var(--ag-shadow-sm);
+}
+[data-vibe-tier='party'] .ag-btn--secondary {
+  background: var(--ag-grad-cotton);
+  color: var(--ag-white);
+  text-shadow: 0 1px 2px rgba(42, 10, 61, 0.25);
+}
+
+/* Cards — thicker border, deeper shadow */
+[data-vibe-tier='party'] .ag-card {
+  border-radius: var(--ag-radius-xl);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow: var(--ag-shadow-md);
+  padding: var(--ag-space-6);
+}
+[data-vibe-tier='party'] .ag-card__title {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-black);
+}
+[data-vibe-tier='party'] .ag-card--feature {
+  border-image: var(--ag-grad-rainbow) 1;
+}
+
+/* Badges — gradient fills, upper display type */
+[data-vibe-tier='party'] .ag-badge {
+  background: var(--ag-grad-sunset);
+  color: var(--ag-white);
+  border-color: transparent;
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ag-tracking-wide);
+  padding: 0.3em 0.9em;
+  box-shadow: var(--ag-shadow-sm);
+}
+[data-vibe-tier='party'] .ag-badge--accent  { background: var(--ag-grad-unicorn); }
+[data-vibe-tier='party'] .ag-badge--info,
+[data-vibe-tier='party'] .ag-badge--cyan    { background: var(--ag-grad-dolphin); color: var(--ag-white); }
+[data-vibe-tier='party'] .ag-badge--purple  { background: var(--ag-grad-unicorn); color: var(--ag-white); }
+[data-vibe-tier='party'] .ag-badge--lime    {
+  background: linear-gradient(135deg, var(--ag-lime), var(--ag-teal));
+  color: var(--ag-grape-800);
+  text-shadow: none;
+}
+[data-vibe-tier='party'] .ag-badge--success {
+  background: linear-gradient(135deg, var(--ag-lime), var(--ag-teal));
+  color: var(--ag-grape-800);
+  text-shadow: none;
+}
+[data-vibe-tier='party'] .ag-badge--warning {
+  background: linear-gradient(135deg, var(--ag-orange), var(--ag-yellow));
+  color: var(--ag-grape-800);
+  text-shadow: none;
+}
+[data-vibe-tier='party'] .ag-badge--danger {
+  background: linear-gradient(135deg, var(--ag-pink-hot), var(--ag-coral));
+}
+[data-vibe-tier='party'] .ag-badge__dot { background: rgba(255, 255, 255, 0.85); }
+
+/* Sticker — peel-corner shadow + wider tilt */
+[data-vibe-tier='party'] .ag-sticker {
+  background: var(--ag-white);
+  color: var(--ag-grape-800);
+  border: 2px solid var(--ag-cloud-2);
+  box-shadow: 0 4px 0 rgba(42, 10, 61, 0.15), var(--ag-shadow-sm);
+  transform: rotate(-3deg);
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='party'] .ag-sticker:hover { transform: rotate(0deg) scale(1.05); }
+
+/* Inputs — 3px pink-bubble border, violet focus glow */
+[data-vibe-tier='party'] .ag-input,
+[data-vibe-tier='party'] .ag-textarea,
+[data-vibe-tier='party'] .ag-select {
+  border-width: 3px;
+  border-color: var(--ag-pink-bubble);
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='party'] .ag-input:focus,
+[data-vibe-tier='party'] .ag-textarea:focus,
+[data-vibe-tier='party'] .ag-select:focus {
+  border-color: var(--ag-violet);
+  box-shadow: var(--ag-glow-purple);
+}
+[data-vibe-tier='party'] .ag-label {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+}
+
+/* Nav — pill, sticky-friendly, thick transparent border */
+[data-vibe-tier='party'] .ag-nav {
+  border-radius: var(--ag-radius-pill);
+  border-width: 3px;
+  padding: var(--ag-space-3) var(--ag-space-5);
+}
+[data-vibe-tier='party'] .ag-nav__brand {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-black);
+}
+[data-vibe-tier='party'] .ag-nav__link[aria-current='page'] {
+  background: var(--ag-grad-unicorn);
+  color: var(--ag-white);
+  border-radius: var(--ag-radius-pill);
+}
+
+/* Tabs — pill container, active tab gets unicorn gradient */
+[data-vibe-tier='party'] .ag-tabs {
+  display: inline-flex;
+  gap: var(--ag-space-1);
+  padding: var(--ag-space-1);
+  background: var(--ag-color-surface-2);
+  border-radius: var(--ag-radius-pill);
+  border-bottom: none;
+  box-shadow: inset 0 2px 6px rgba(42, 10, 61, 0.15);
+}
+[data-vibe-tier='party'] .ag-tab {
+  border-radius: var(--ag-radius-pill);
+  border-bottom: none;
+  margin-bottom: 0;
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+  padding: 0.55em 1.4em;
+}
+[data-vibe-tier='party'] .ag-tab[aria-selected='true'] {
+  background: var(--ag-grad-unicorn);
+  color: var(--ag-white);
+  border-bottom: none;
+}
+
+/* Progress — always-animated rainbow with pink border */
+[data-vibe-tier='party'] .ag-progress {
+  height: 18px;
+  border: 2px solid var(--ag-pink-bubble);
+  background: var(--ag-cloud-2);
+}
+[data-vibe-tier='party'] .ag-progress__bar {
+  background: var(--ag-grad-rainbow);
+  background-size: 200% auto;
+  animation: ag-rainbow-shift 3s linear infinite;
+}
+
+/* Alerts — thicker sunset border, display font */
+[data-vibe-tier='party'] .ag-alert {
+  border-left-width: 8px;
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='party'] .ag-alert__title {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-black);
+}
+
+/* Modal — rainbow glow */
+[data-vibe-tier='party'] .ag-modal {
+  border-radius: var(--ag-radius-xl);
+  border: 3px solid transparent;
+  box-shadow: var(--ag-shadow-lg), var(--ag-glow-rainbow);
+}
+
+/* Table — holo header stays vivid, header type gets display font */
+[data-vibe-tier='party'] .ag-table {
+  border-radius: var(--ag-radius-lg);
+  border-width: 3px;
+}
+[data-vibe-tier='party'] .ag-table thead th {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+}
+
+/* Toggle — dolphin gradient when on, unicorn emoji thumb (a wink) */
+[data-vibe-tier='party'] .ag-toggle input:checked ~ .ag-toggle__track {
+  background: var(--ag-grad-dolphin);
+}
+[data-vibe-tier='party'] .ag-toggle__track::after {
+  background: var(--ag-white) center/60% no-repeat;
+}
+
+/* ================================================
+   ★ CALM-TIER OVERRIDES ★
+   Applied by JS when vibe <= 0.10 via <html data-vibe-tier="calm">.
+   The mirror-image of party-tier: strip gradients to near-grayscale,
+   flatten loud variants to solid surfaces, hide decoration.
+   You should have to squint to see anything colorful.
+   ================================================ */
+
+/* Kill ambient decoration entirely */
+[data-vibe-tier='calm'] .ag-star,
+[data-vibe-tier='calm'] .ag-shooting-star,
+[data-vibe-tier='calm'] .ag-glitter::before { opacity: 0 !important; }
+
+/* Rainbow text collapses to solid ink */
+[data-vibe-tier='calm'] .ag-text-gradient,
+[data-vibe-tier='calm'] .ag-text-holo {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--ag-color-ink);
+  animation: none;
+}
+
+/* Rainbow / sunset / mermaid / dolphin buttons → solid ink button */
+[data-vibe-tier='calm'] .ag-btn--rainbow,
+[data-vibe-tier='calm'] .ag-btn--sunset,
+[data-vibe-tier='calm'] .ag-btn--mermaid,
+[data-vibe-tier='calm'] .ag-btn--dolphin {
+  background: var(--ag-color-ink);
+  color: var(--ag-color-ink-inverse);
+  animation: none;
+  box-shadow: var(--ag-shadow-xs);
+  text-shadow: none;
+  filter: none;
+}
+[data-vibe-tier='calm'] .ag-btn--rainbow:hover,
+[data-vibe-tier='calm'] .ag-btn--sunset:hover,
+[data-vibe-tier='calm'] .ag-btn--mermaid:hover,
+[data-vibe-tier='calm'] .ag-btn--dolphin:hover {
+  background: var(--ag-color-ink-muted);
+  box-shadow: var(--ag-shadow-sm);
+}
+
+/* Primary button → same treatment; no gradient */
+[data-vibe-tier='calm'] .ag-btn--primary {
+  background: var(--ag-color-ink);
+  color: var(--ag-color-ink-inverse);
+  filter: none;
+  box-shadow: var(--ag-shadow-xs);
+}
+
+/* Loud card variants → flat surfaces with a hairline border */
+[data-vibe-tier='calm'] .ag-card--gradient,
+[data-vibe-tier='calm'] .ag-card--holo {
+  background: var(--ag-color-surface);
+  color: var(--ag-color-ink);
+  border: 1px solid var(--ag-color-border);
+  animation: none;
+  filter: none;
+}
+[data-vibe-tier='calm'] .ag-card--gradient .ag-card__title,
+[data-vibe-tier='calm'] .ag-card--gradient p,
+[data-vibe-tier='calm'] .ag-card--holo .ag-card__title,
+[data-vibe-tier='calm'] .ag-card--holo p { color: var(--ag-color-ink); }
+[data-vibe-tier='calm'] .ag-card--gradient .ag-muted,
+[data-vibe-tier='calm'] .ag-card--holo .ag-muted { color: var(--ag-color-ink-muted); }
+
+/* Swatch tiles — the "here's what a gradient looks like" demos
+   still exist so the token names read, but bleached to near-mono */
+[data-vibe-tier='calm'] .ag-swatch-tile {
+  filter: saturate(0.08);
+  color: var(--ag-color-ink);
+  text-shadow: none;
+  box-shadow: var(--ag-shadow-xs);
+  opacity: 0.55;
+}
+[data-vibe-tier='calm'] .ag-swatch-tile code { color: var(--ag-color-ink-muted); }
+
+/* Sticker → plain white pill, no rotation, no peel shadow */
+[data-vibe-tier='calm'] .ag-sticker {
+  background: var(--ag-color-surface);
+  color: var(--ag-color-ink);
+  border: 1px solid var(--ag-color-border);
+  box-shadow: none;
+  transform: none !important;
+  filter: none;
+  font-family: var(--ag-font-body);
+  font-weight: var(--ag-weight-medium);
+  border-radius: var(--ag-radius-md);
+}
+
+/* Nav brand rainbow → solid ink */
+[data-vibe-tier='calm'] .ag-nav__brand { color: var(--ag-color-ink); }
+
+/* Divider → thin gray line */
+[data-vibe-tier='calm'] .ag-divider {
+  height: 1px;
+  background: var(--ag-color-border);
+  animation: none;
+  filter: none;
+  border-radius: 0;
+}
+
+/* Progress bar → solid dark bar */
+[data-vibe-tier='calm'] .ag-progress__bar,
+[data-vibe-tier='calm'] .ag-progress--rainbow .ag-progress__bar {
+  background: var(--ag-color-ink);
+  filter: none;
+  animation: none;
+}
+
+/* Badge cyan/purple/lime → neutral chip */
+[data-vibe-tier='calm'] .ag-badge--cyan,
+[data-vibe-tier='calm'] .ag-badge--purple,
+[data-vibe-tier='calm'] .ag-badge--lime {
+  background: var(--ag-color-surface-sunk);
+  color: var(--ag-color-ink-muted);
+  border: 1px solid var(--ag-color-border);
+}
+
+/* Toggle track when on → solid ink, not gradient */
+[data-vibe-tier='calm'] .ag-toggle input:checked ~ .ag-toggle__track {
+  background: var(--ag-color-ink);
+  filter: none;
+}
+
+/* Holo table header → plain surface */
+[data-vibe-tier='calm'] .ag-table--holo thead th {
+  background: var(--ag-color-surface-sunk);
+  color: var(--ag-color-ink-muted);
+  filter: none;
+}
+
+/* Bob / spin / float animations all pause (already do via --ag-vibe-anim-play,
+   but belt-and-suspenders for anything using the animation directly) */
+[data-vibe-tier='calm'] .ag-bob,
+[data-vibe-tier='calm'] .ag-spin,
+[data-vibe-tier='calm'] .ag-float { animation: none; }
+
+/* Focus ring stays visible — accessibility trumps aesthetic */

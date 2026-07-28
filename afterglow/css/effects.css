@@ -176,3 +176,106 @@
    Aria-hidden decorative sparkles helper
    -------------------------------------------------------- */
 .ag-decoration { user-select: none; pointer-events: none; }
+
+/* --------------------------------------------------------
+   Star field — floating emoji stars (absolute positioned)
+   Opacity scales with vibe.
+   -------------------------------------------------------- */
+.ag-star {
+  position: absolute;
+  font-size: 1.4rem;
+  opacity: var(--ag-vibe-sparkle-opacity);
+  pointer-events: none;
+  animation: ag-star-twinkle calc(3s / var(--ag-vibe-motion-amp)) ease-in-out infinite alternate,
+             ag-float-y calc(6s / var(--ag-vibe-motion-amp)) ease-in-out infinite alternate;
+  animation-play-state: var(--ag-vibe-anim-play);
+  z-index: var(--ag-z-base);
+  filter: drop-shadow(0 2px 4px rgba(42, 10, 61, 0.2));
+}
+@keyframes ag-star-twinkle {
+  from { transform: scale(0.9) rotate(-6deg); }
+  to   { transform: scale(calc(1 + 0.15 * var(--ag-vibe-motion-amp))) rotate(6deg); }
+}
+
+/* Shooting star — small streak across the sky */
+.ag-shooting-star {
+  position: absolute;
+  width: calc(80px * var(--ag-vibe-motion-amp));
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ag-pink-hot), transparent);
+  opacity: var(--ag-vibe-sparkle-opacity);
+  pointer-events: none;
+  border-radius: var(--ag-radius-pill);
+  transform: rotate(-20deg);
+  animation: ag-shoot calc(5s / var(--ag-vibe-motion-amp)) linear infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+@keyframes ag-shoot {
+  0%   { transform: translateX(-50vw) rotate(-20deg); opacity: 0; }
+  20%  { opacity: var(--ag-vibe-sparkle-opacity); }
+  100% { transform: translateX(80vw) rotate(-20deg); opacity: 0; }
+}
+
+/* Gentle bob — emoji or icon bounce */
+.ag-bob {
+  display: inline-block;
+  animation: ag-bob calc(2.4s / var(--ag-vibe-motion-amp)) ease-in-out infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+}
+@keyframes ag-bob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(calc(-6px * var(--ag-vibe-motion-amp))) rotate(calc(6deg * var(--ag-vibe-motion-amp))); }
+}
+
+/* Slow spin — for rainbow rings, badges */
+.ag-spin {
+  display: inline-block;
+  animation: ag-spin calc(8s / var(--ag-vibe-motion-amp)) linear infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+}
+@keyframes ag-spin { to { transform: rotate(360deg); } }
+
+/* Rainbow divider — thick pill bar */
+.ag-divider {
+  height: calc(3px + var(--ag-vibe) * 5px);
+  border: none;
+  margin-block: var(--ag-space-8);
+  background: var(--ag-color-accent-gradient);
+  background-size: 200% auto;
+  border-radius: var(--ag-radius-pill);
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  animation: ag-rainbow-shift calc(5s / var(--ag-vibe-motion-amp)) linear infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+}
+[data-vibe-tier='party'] .ag-divider {
+  background: var(--ag-grad-rainbow);
+  background-size: 200% auto;
+}
+
+/* Big colorful swatch tile — for design system showcases */
+.ag-swatch-tile {
+  border-radius: var(--ag-radius-md);
+  padding: var(--ag-space-5) var(--ag-space-4);
+  color: var(--ag-white);
+  font-family: var(--ag-font-body);
+  font-weight: var(--ag-weight-bold);
+  font-size: var(--ag-text-sm);
+  text-shadow: 0 1px 2px rgba(42, 10, 61, 0.4);
+  box-shadow: var(--ag-shadow-sm);
+  min-height: 92px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+.ag-swatch-tile code {
+  font-family: var(--ag-font-mono);
+  font-size: var(--ag-text-2xs);
+  opacity: 0.95;
+  font-weight: var(--ag-weight-regular);
+}
+[data-vibe-tier='party'] .ag-swatch-tile {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+}

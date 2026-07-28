@@ -3,525 +3,328 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Afterglow — a design system with a saturation knob</title>
-  <meta name="description" content="Afterglow: the joy of UnicornMagic, grown up. Semantic tokens, a vibe dial, and components that ship in real products." />
+  <title>✨ Afterglow — a design system with a saturation knob</title>
+  <meta name="description" content="Afterglow: the joy of UnicornMagic, on a Tuesday morning. One vibe dial, whole system." />
   <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/effects.css" />
   <link rel="stylesheet" href="css/components.css" />
   <style>
-    /* Page-only styles — never reach into the system */
-    .hero { padding-block: var(--ag-space-9) var(--ag-space-8); text-align: center; position: relative; }
-    .hero h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); margin-bottom: var(--ag-space-4); }
-    .hero .ag-lede { margin-inline: auto; }
-    .hero__meta { margin-top: var(--ag-space-5); }
+    /* Page-local glue only — everything reusable lives in the system files */
+    .ag-hero {
+      position: relative;
+      text-align: center;
+      padding-block: var(--ag-space-9) var(--ag-space-8);
+    }
+    .ag-hero h1 {
+      font-size: clamp(2.6rem, 7vw, var(--ag-text-5xl));
+      line-height: var(--ag-leading-tight);
+    }
+    .ag-hero p { margin-inline: auto; font-size: var(--ag-text-lg); }
+    .ag-btn-row { display: flex; flex-wrap: wrap; gap: var(--ag-space-4); justify-content: center; margin-top: var(--ag-space-5); }
+    .section-head { margin-bottom: var(--ag-space-5); }
+    .demo-row { display: flex; flex-wrap: wrap; gap: var(--ag-space-4); align-items: center; }
+    footer { text-align: center; padding-block: var(--ag-space-8); }
 
-    /* The vibe dial control */
-    .vibe-panel {
-      position: sticky; top: var(--ag-space-4);
-      z-index: var(--ag-z-sticky);
-      background: color-mix(in oklab, var(--ag-color-surface), transparent 8%);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--ag-color-border);
-      border-radius: var(--ag-radius-lg);
-      padding: var(--ag-space-4) var(--ag-space-5);
-      box-shadow: var(--ag-shadow-md);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: var(--ag-space-4);
+    /* The vibe control — small, tucked into the nav so it doesn't dominate */
+    .vibe-mini {
+      display: inline-flex;
       align-items: center;
-      margin-bottom: var(--ag-space-6);
-    }
-    .vibe-panel__label { display: flex; align-items: center; gap: var(--ag-space-3); flex-wrap: wrap; }
-    .vibe-panel__slider { width: 260px; max-width: 100%; accent-color: var(--ag-color-accent); }
-    .vibe-panel__readout {
-      font-family: var(--ag-font-mono);
-      font-size: var(--ag-text-sm);
-      background: var(--ag-color-surface-sunk);
-      padding: 0.2em 0.6em;
-      border-radius: var(--ag-radius-xs);
-    }
-    .vibe-panel__presets { display: flex; gap: var(--ag-space-2); flex-wrap: wrap; }
-    .vibe-panel__theme { display: flex; gap: var(--ag-space-2); align-items: center; }
-
-    .section-eyebrow { display: flex; align-items: baseline; gap: var(--ag-space-3); margin-bottom: var(--ag-space-5); }
-    .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--ag-space-3); }
-    .swatch {
-      display: flex; flex-direction: column; gap: var(--ag-space-2);
-      padding: var(--ag-space-3);
-      border-radius: var(--ag-radius-md);
-      background: var(--ag-color-surface);
+      gap: var(--ag-space-2);
+      padding: 0.35em 0.9em;
+      background: color-mix(in oklab, var(--ag-color-surface), transparent 20%);
       border: 1px solid var(--ag-color-border);
+      border-radius: var(--ag-radius-pill);
       font-size: var(--ag-text-xs);
     }
-    .swatch__chip { height: 42px; border-radius: var(--ag-radius-sm); }
-    .swatch__name { font-family: var(--ag-font-mono); color: var(--ag-color-ink); }
-    .swatch__hex  { color: var(--ag-color-ink-subtle); }
-
-    .grad-tile { height: 90px; border-radius: var(--ag-radius-md); box-shadow: var(--ag-shadow-sm); filter: saturate(var(--ag-vibe-gradient-sat)); }
-
-    .usage-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ag-space-5); }
-    @media (max-width: 720px) { .usage-row { grid-template-columns: 1fr; } }
-
-    .usage__do,
-    .usage__dont {
-      padding: var(--ag-space-4);
-      border-radius: var(--ag-radius-md);
-      border: 1px solid var(--ag-color-border);
+    .vibe-mini input[type=range] { width: 110px; accent-color: var(--ag-color-accent); }
+    .vibe-mini__readout {
+      font-family: var(--ag-font-mono);
+      color: var(--ag-color-ink-muted);
+      min-width: 2.4em;
     }
-    .usage__do   { border-left: 4px solid var(--ag-color-success); background: var(--ag-color-success-soft); }
-    .usage__dont { border-left: 4px solid var(--ag-color-danger);  background: var(--ag-color-danger-soft); }
+    [data-vibe-tier='party'] .vibe-mini { border-width: 2px; }
 
-    footer { padding-block: var(--ag-space-8) var(--ag-space-9); text-align: center; color: var(--ag-color-ink-muted); font-size: var(--ag-text-sm); }
+    /* Preset chips */
+    .preset-row {
+      display: flex; gap: var(--ag-space-2); justify-content: center; flex-wrap: wrap;
+      margin-top: var(--ag-space-4);
+    }
+    .preset-row .ag-btn { padding: 0.4em 1em; font-size: var(--ag-text-sm); }
   </style>
 </head>
 <body>
-  <div class="ag-container">
-    <!-- =========================================================
-         HERO
-         ========================================================= -->
-    <section class="hero">
-      <p class="ag-eyebrow">A design system, grown up</p>
-      <h1><span class="ag-text-gradient">Afterglow</span></h1>
-      <p class="ag-lede">
-        The joy of UnicornMagic, on a Tuesday morning. Semantic tokens, a saturation knob,
-        and the boring components that let it ship in real products — without losing the sparkle.
-      </p>
-      <div class="hero__meta ag-cluster" style="justify-content: center;">
-        <span class="ag-badge ag-badge--accent"><span class="ag-badge__dot"></span> v0.1 · Preview</span>
-        <span class="ag-badge">Semantic tokens</span>
-        <span class="ag-badge">Vibe dial</span>
-        <span class="ag-badge">Twilight + HC themes</span>
-      </div>
-    </section>
 
-    <!-- =========================================================
-         THE VIBE DIAL — the killer feature. Interactive.
-         ========================================================= -->
-    <div class="vibe-panel" role="region" aria-label="Vibe controls">
-      <div class="vibe-panel__label">
-        <label for="vibe-slider" style="font-weight: var(--ag-weight-semi);">Vibe</label>
-        <input id="vibe-slider" class="vibe-panel__slider" type="range" min="0" max="1" step="0.01" value="0.55" />
-        <span id="vibe-readout" class="vibe-panel__readout">0.55</span>
-        <div class="vibe-panel__presets" role="group" aria-label="Vibe presets">
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0">Boardroom</button>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.3">Weekday</button>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.55">Studio</button>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.8">Afterhours</button>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="1">UnicornMagic 🦄</button>
-        </div>
-      </div>
-      <div class="vibe-panel__theme">
-        <label for="theme-select" class="ag-muted" style="font-size: var(--ag-text-sm);">Theme</label>
-        <select id="theme-select" class="ag-select" style="width: auto;">
-          <option value="">Daylight</option>
-          <option value="twilight">Twilight</option>
-          <option value="highcontrast">High contrast</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- =========================================================
-         PHILOSOPHY
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">The idea</p>
-        <h2>Tunable joy.</h2>
-      </div>
-      <div class="ag-grid">
-        <article class="ag-card">
-          <h3 class="ag-card__title">One knob, whole system</h3>
-          <p class="ag-muted">
-            <code>--ag-vibe</code> scales sparkle opacity, gradient saturation, border radius, and
-            animation amplitude. Same components, radically different register.
-          </p>
-        </article>
-        <article class="ag-card">
-          <h3 class="ag-card__title">Semantic tokens</h3>
-          <p class="ag-muted">
-            Components read <code>--ag-color-accent</code>, not <code>--ag-pink-hot</code>.
-            Rebrand in a coffee break.
-          </p>
-        </article>
-        <article class="ag-card">
-          <h3 class="ag-card__title">Sparkles as reward</h3>
-          <p class="ag-muted">
-            Motion is tied to state changes — success, acknowledge, transition — not ambient decoration.
-            Reduced motion collapses cleanly.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- =========================================================
-         BUTTONS — with usage guidance
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>Buttons</h2>
-      </div>
-      <article class="ag-card">
-        <div class="ag-cluster">
-          <button class="ag-btn ag-btn--primary">Primary action</button>
-          <button class="ag-btn ag-btn--secondary">Secondary</button>
-          <button class="ag-btn ag-btn--ghost">Ghost</button>
-          <button class="ag-btn ag-btn--danger">Delete</button>
-          <button class="ag-btn ag-btn--rainbow">Rainbow ✨</button>
-          <button class="ag-btn ag-btn--primary" disabled>Disabled</button>
-        </div>
-        <div class="ag-cluster" style="margin-top: var(--ag-space-4);">
-          <button class="ag-btn ag-btn--primary ag-btn--sm">Small</button>
-          <button class="ag-btn ag-btn--primary">Default</button>
-          <button class="ag-btn ag-btn--primary ag-btn--lg">Large</button>
-        </div>
-      </article>
-
-      <div class="usage-row" style="margin-top: var(--ag-space-5);">
-        <div class="usage__do">
-          <strong>✓ Do</strong>
-          <p>One primary or rainbow button per view. Reserve the gradient for the single most important action.</p>
-        </div>
-        <div class="usage__dont">
-          <strong>✗ Don't</strong>
-          <p>Stack multiple rainbow buttons. They stop feeling special and start feeling like a slot machine.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================================
-         CARDS
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>Cards</h2>
-      </div>
-      <div class="ag-grid">
-        <article class="ag-card">
-          <div class="ag-card__header">
-            <h3 class="ag-card__title">Standard card</h3>
-            <span class="ag-badge">New</span>
-          </div>
-          <div class="ag-card__body">
-            <p class="ag-muted">A calm surface for content. Reads from <code>--ag-color-surface</code> — theme-safe.</p>
-          </div>
-          <div class="ag-card__footer">
-            <button class="ag-btn ag-btn--ghost ag-btn--sm">Dismiss</button>
-            <button class="ag-btn ag-btn--primary ag-btn--sm">Continue</button>
-          </div>
-        </article>
-
-        <article class="ag-card ag-card--feature">
-          <div class="ag-card__header">
-            <h3 class="ag-card__title">Feature card</h3>
-            <span class="ag-badge ag-badge--accent">Highlighted</span>
-          </div>
-          <div class="ag-card__body">
-            <p class="ag-muted">Gradient border on a calm interior — the "hero tile" pattern without shouting.</p>
-          </div>
-        </article>
-
-        <article class="ag-card ag-glitter">
-          <div class="ag-card__header">
-            <h3 class="ag-card__title">Sparkling card</h3>
-            <span class="ag-sticker">🦄 Legacy</span>
-          </div>
-          <div class="ag-card__body">
-            <p class="ag-muted">Adds <code>.ag-glitter</code>. Turn the vibe up — the sparkles wake up. Turn it to boardroom — they go quiet.</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- =========================================================
-         FORMS
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>Forms</h2>
-      </div>
-      <article class="ag-card">
-        <div class="ag-grid">
-          <div class="ag-field">
-            <label class="ag-label" for="f-name">Name <span class="ag-label__required">*</span></label>
-            <input id="f-name" class="ag-input" type="text" placeholder="Kate Steele" />
-            <div class="ag-field__help">Your display name.</div>
-          </div>
-
-          <div class="ag-field" data-state="error">
-            <label class="ag-label" for="f-email">Work email</label>
-            <input id="f-email" class="ag-input" type="email" value="not-an-email" aria-invalid="true" />
-            <div class="ag-field__help">⚠ Please enter a valid email address.</div>
-          </div>
-
-          <div class="ag-field" data-state="success">
-            <label class="ag-label" for="f-user">Username</label>
-            <input id="f-user" class="ag-input" type="text" value="afterglow" />
-            <div class="ag-field__help">✓ Available.</div>
-          </div>
-
-          <div class="ag-field">
-            <label class="ag-label" for="f-role">Role</label>
-            <select id="f-role" class="ag-select">
-              <option>Designer</option>
-              <option>Engineer</option>
-              <option>PM</option>
-            </select>
-          </div>
-
-          <div class="ag-field" style="grid-column: 1 / -1;">
-            <label class="ag-label" for="f-notes">Notes</label>
-            <textarea id="f-notes" class="ag-textarea" placeholder="Tell us about your vibe…"></textarea>
-          </div>
-        </div>
-
-        <div class="ag-cluster" style="margin-top: var(--ag-space-5); justify-content: space-between;">
-          <label class="ag-toggle">
-            <input type="checkbox" checked />
-            <span class="ag-toggle__track"></span>
-            <span>Email me updates</span>
-          </label>
-          <label class="ag-check">
-            <input type="checkbox" />
-            <span>I agree to the sparkle terms</span>
-          </label>
-        </div>
-
-        <div class="ag-card__footer">
-          <button class="ag-btn ag-btn--ghost">Cancel</button>
-          <button class="ag-btn ag-btn--primary ag-sparkle-target" id="btn-save">Save</button>
-        </div>
-      </article>
-    </section>
-
-    <!-- =========================================================
-         ALERTS
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>Feedback</h2>
-      </div>
-      <div class="ag-stack">
-        <div class="ag-alert" role="status">
-          <span class="ag-alert__icon" aria-hidden="true">ℹ️</span>
-          <div>
-            <div class="ag-alert__title">Heads up</div>
-            <div class="ag-alert__body">The vibe dial persists per session. It's stored in localStorage.</div>
-          </div>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm">Dismiss</button>
-        </div>
-
-        <div class="ag-alert ag-alert--success" role="status">
-          <span class="ag-alert__icon" aria-hidden="true">✓</span>
-          <div>
-            <div class="ag-alert__title">Saved successfully</div>
-            <div class="ag-alert__body">Your sparkles have been captured.</div>
-          </div>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm">OK</button>
-        </div>
-
-        <div class="ag-alert ag-alert--warning" role="status">
-          <span class="ag-alert__icon" aria-hidden="true">⚠</span>
-          <div>
-            <div class="ag-alert__title">Rainbow overload detected</div>
-            <div class="ag-alert__body">You have three rainbow buttons on this page. Consider promoting only one.</div>
-          </div>
-        </div>
-
-        <div class="ag-alert ag-alert--danger" role="alert">
-          <span class="ag-alert__icon" aria-hidden="true">✕</span>
-          <div>
-            <div class="ag-alert__title">Delete this workspace?</div>
-            <div class="ag-alert__body">This action is irreversible. 47 files will be removed.</div>
-          </div>
-          <button class="ag-btn ag-btn--danger ag-btn--sm">Delete</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================================
-         NAV, BREADCRUMBS, TABS
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>Navigation</h2>
-      </div>
-
-      <nav class="ag-nav" aria-label="Primary">
-        <a href="#" class="ag-nav__brand">✨ Afterglow</a>
-        <ul class="ag-nav__links" role="list">
-          <li><a href="#" class="ag-nav__link" aria-current="page">Tokens</a></li>
-          <li><a href="#" class="ag-nav__link">Components</a></li>
-          <li><a href="#" class="ag-nav__link">Themes</a></li>
-          <li><a href="#" class="ag-nav__link">Guides</a></li>
-        </ul>
-        <button class="ag-btn ag-btn--primary ag-btn--sm">Get started</button>
-      </nav>
-
-      <div class="ag-card" style="margin-top: var(--ag-space-5);">
-        <ol class="ag-crumbs" role="list">
-          <li><a href="#">Docs</a></li>
-          <li><a href="#">Components</a></li>
-          <li aria-current="page">Buttons</li>
-        </ol>
-
-        <div class="ag-tabs" role="tablist" style="margin-top: var(--ag-space-5);">
-          <button class="ag-tab" role="tab" aria-selected="true">Overview</button>
-          <button class="ag-tab" role="tab" aria-selected="false">Anatomy</button>
-          <button class="ag-tab" role="tab" aria-selected="false">Tokens</button>
-          <button class="ag-tab" role="tab" aria-selected="false">Accessibility</button>
-        </div>
-        <div style="padding-top: var(--ag-space-4);">
-          <p class="ag-muted">Panel content lives here. Tabs share a border with the card body — no double lines.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================================
-         TABLE
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>Data table</h2>
-      </div>
-      <table class="ag-table ag-table--holo">
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Status</th>
-            <th>Owner</th>
-            <th>Last touched</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Button</td>
-            <td><span class="ag-badge ag-badge--success"><span class="ag-badge__dot"></span> Stable</span></td>
-            <td>Kate</td>
-            <td>2h ago</td>
-          </tr>
-          <tr>
-            <td>Card</td>
-            <td><span class="ag-badge ag-badge--success"><span class="ag-badge__dot"></span> Stable</span></td>
-            <td>Kate</td>
-            <td>3h ago</td>
-          </tr>
-          <tr>
-            <td>Toast</td>
-            <td><span class="ag-badge ag-badge--warning"><span class="ag-badge__dot"></span> Beta</span></td>
-            <td>Kate</td>
-            <td>1d ago</td>
-          </tr>
-          <tr>
-            <td>DataGrid</td>
-            <td><span class="ag-badge ag-badge--info"><span class="ag-badge__dot"></span> Planned</span></td>
-            <td>—</td>
-            <td>—</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- =========================================================
-         PROGRESS + STATES
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Components</p>
-        <h2>States</h2>
-      </div>
-      <div class="ag-grid">
-        <article class="ag-card">
-          <h3 class="ag-card__title" style="margin-bottom: var(--ag-space-3);">Progress</h3>
-          <div class="ag-stack">
-            <div class="ag-progress"><div class="ag-progress__bar" style="width: 35%;"></div></div>
-            <div class="ag-progress ag-progress--rainbow"><div class="ag-progress__bar" style="width: 72%;"></div></div>
-          </div>
-        </article>
-
-        <article class="ag-card">
-          <h3 class="ag-card__title" style="margin-bottom: var(--ag-space-3);">Loading</h3>
-          <div class="ag-stack-sm">
-            <span class="ag-skeleton" style="width: 60%; height: 1.2em;"></span>
-            <span class="ag-skeleton" style="width: 90%; height: 1em;"></span>
-            <span class="ag-skeleton" style="width: 75%; height: 1em;"></span>
-          </div>
-        </article>
-
-        <article class="ag-card">
-          <div class="ag-empty">
-            <div class="ag-empty__illus" aria-hidden="true">🌈</div>
-            <h4 class="ag-empty__title">No sparkles yet</h4>
-            <p class="ag-muted">Create your first one to get started.</p>
-            <button class="ag-btn ag-btn--primary ag-btn--sm" style="margin-top: var(--ag-space-4);">Add sparkle</button>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- =========================================================
-         TOKENS — swatches
-         ========================================================= -->
-    <section class="ag-section">
-      <div class="section-eyebrow">
-        <p class="ag-eyebrow">Tokens</p>
-        <h2>Semantic colors</h2>
-      </div>
-      <p class="ag-muted" style="margin-bottom: var(--ag-space-5);">
-        Consume these. Never Layer 1 primitives.
-      </p>
-      <div class="swatches">
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-accent);"></div>
-          <div class="swatch__name">--ag-color-accent</div><div class="swatch__hex">brand CTA</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-accent-soft);"></div>
-          <div class="swatch__name">--ag-color-accent-soft</div><div class="swatch__hex">accent bg</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-success);"></div>
-          <div class="swatch__name">--ag-color-success</div><div class="swatch__hex">positive</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-warning);"></div>
-          <div class="swatch__name">--ag-color-warning</div><div class="swatch__hex">caution</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-danger);"></div>
-          <div class="swatch__name">--ag-color-danger</div><div class="swatch__hex">destructive</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-info);"></div>
-          <div class="swatch__name">--ag-color-info</div><div class="swatch__hex">informational</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-ink);"></div>
-          <div class="swatch__name">--ag-color-ink</div><div class="swatch__hex">body text</div></div>
-        <div class="swatch"><div class="swatch__chip" style="background: var(--ag-color-ink-muted);"></div>
-          <div class="swatch__name">--ag-color-ink-muted</div><div class="swatch__hex">secondary</div></div>
-      </div>
-
-      <h3 style="margin-top: var(--ag-space-7); margin-bottom: var(--ag-space-4);">Gradients</h3>
-      <div class="swatches">
-        <div class="swatch"><div class="grad-tile" style="background: var(--ag-grad-rainbow);"></div>
-          <div class="swatch__name">--ag-grad-rainbow</div></div>
-        <div class="swatch"><div class="grad-tile" style="background: var(--ag-grad-unicorn);"></div>
-          <div class="swatch__name">--ag-grad-unicorn</div></div>
-        <div class="swatch"><div class="grad-tile" style="background: var(--ag-grad-mermaid);"></div>
-          <div class="swatch__name">--ag-grad-mermaid</div></div>
-        <div class="swatch"><div class="grad-tile" style="background: var(--ag-grad-sunset);"></div>
-          <div class="swatch__name">--ag-grad-sunset</div></div>
-        <div class="swatch"><div class="grad-tile ag-holo"></div>
-          <div class="swatch__name">--ag-grad-holo</div></div>
-        <div class="swatch"><div class="grad-tile" style="background: var(--ag-grad-cotton);"></div>
-          <div class="swatch__name">--ag-grad-cotton</div></div>
-      </div>
-    </section>
-
-    <footer>
-      <p>Afterglow — a design system with a saturation knob. A grown-up sibling of <a href="../">UnicornMagic</a>.</p>
-      <p style="margin-top: var(--ag-space-2);">
-        <kbd>Alt</kbd> + <kbd>V</kbd> to cycle vibe presets · <kbd>Alt</kbd> + <kbd>T</kbd> to cycle themes
-      </p>
-    </footer>
+  <!-- ✨ Decorative sparkle field (opacity scales with vibe) -->
+  <div aria-hidden="true" class="ag-decoration">
+    <span class="ag-star" style="top: 14%; left: 8%;">⭐</span>
+    <span class="ag-star" style="top: 30%; right: 10%; animation-delay: .6s;">🌟</span>
+    <span class="ag-star" style="top: 68%; left: 4%;">✨</span>
+    <span class="ag-star" style="top: 82%; right: 6%; animation-delay: 1.2s;">💫</span>
+    <span class="ag-shooting-star" style="top: 12%; left: 40%;"></span>
+    <span class="ag-shooting-star" style="top: 26%; left: 6%; animation-delay: 1.6s;"></span>
   </div>
 
+  <!-- 🧭 NAV -->
+  <nav class="ag-nav ag-container" style="margin-top: var(--ag-space-4);" aria-label="Primary">
+    <a href="#" class="ag-nav__brand">
+      <span class="ag-bob">✨</span> <span class="ag-text-gradient">Afterglow</span>
+    </a>
+    <ul class="ag-nav__links" role="list">
+      <li><a href="#colors" class="ag-nav__link">Colors</a></li>
+      <li><a href="#type" class="ag-nav__link">Type</a></li>
+      <li><a href="#buttons" class="ag-nav__link">Buttons</a></li>
+      <li><a href="#cards" class="ag-nav__link">Cards</a></li>
+      <li><a href="#forms" class="ag-nav__link">Forms</a></li>
+    </ul>
+    <div style="display: flex; gap: var(--ag-space-2); align-items: center;">
+      <label class="vibe-mini" title="Drag to change the vibe">
+        <span>Vibe</span>
+        <input id="vibe-slider" type="range" min="0" max="1" step="0.01" value="0.55" />
+        <span id="vibe-readout" class="vibe-mini__readout">0.55</span>
+      </label>
+      <select id="theme-select" class="ag-select" style="width: auto; padding: 0.35em 0.8em; font-size: var(--ag-text-xs);" aria-label="Theme">
+        <option value="">☀ Daylight</option>
+        <option value="twilight">🌙 Twilight</option>
+        <option value="highcontrast">◐ High contrast</option>
+      </select>
+      <a class="ag-btn ag-btn--sm ag-btn--rainbow" href="#get-started">Get Magic ✨</a>
+    </div>
+  </nav>
+
+  <!-- 🌈 HERO -->
+  <header class="ag-hero ag-container">
+    <span class="ag-eyebrow">A design system with a saturation knob</span>
+    <h1>
+      <span class="ag-text-gradient">Sparkle-Powered</span><br />
+      Design System 🌈🐬
+    </h1>
+    <p class="ag-muted">
+      Neon rainbow gradients, holographic foil, glitter, unicorns &amp; dolphins —
+      dial the vibe from Tuesday morning to Friday night without changing a single component.
+    </p>
+    <div class="ag-btn-row" id="get-started">
+      <button class="ag-btn ag-btn--rainbow ag-btn--lg">Start Sparkling ✨</button>
+      <button class="ag-btn ag-btn--ghost ag-btn--lg">View Components 🌟</button>
+    </div>
+    <div class="demo-row" style="justify-content:center; margin-top: var(--ag-space-6);">
+      <span class="ag-sticker" style="transform: rotate(-4deg);">🐬 Dolphin Dreams</span>
+      <span class="ag-sticker" style="transform: rotate(3deg);">🦄 Unicorn Mode</span>
+      <span class="ag-sticker" style="transform: rotate(-2deg);">🌈 Rainbow Ready</span>
+    </div>
+
+    <!-- Vibe presets — the one big control -->
+    <div class="preset-row" role="group" aria-label="Vibe presets">
+      <button class="ag-btn ag-btn--ghost" data-vibe-preset="0">📊 Boardroom</button>
+      <button class="ag-btn ag-btn--ghost" data-vibe-preset="0.3">☕ Weekday</button>
+      <button class="ag-btn ag-btn--ghost" data-vibe-preset="0.55">🎨 Studio</button>
+      <button class="ag-btn ag-btn--ghost" data-vibe-preset="0.8">🌆 Afterhours</button>
+      <button class="ag-btn ag-btn--ghost" data-vibe-preset="1">🦄 UnicornMagic</button>
+    </div>
+  </header>
+
+  <main class="ag-container">
+
+    <!-- 🎨 COLORS -->
+    <section class="ag-section" id="colors">
+      <div class="section-head">
+        <span class="ag-eyebrow">Foundations</span>
+        <h2>🎨 Color &amp; Gradients</h2>
+        <p class="ag-muted">Candy-bright neons plus dreamy multi-stop gradients. Text uses deep grape for AA contrast at every vibe.</p>
+      </div>
+      <div class="ag-grid">
+        <div class="ag-swatch-tile" style="background: var(--ag-grad-rainbow);">Rainbow <code>--ag-grad-rainbow</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-grad-unicorn);">Unicorn <code>--ag-grad-unicorn</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-grad-dolphin);">Dolphin <code>--ag-grad-dolphin</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-grad-mermaid);">Mermaid <code>--ag-grad-mermaid</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-grad-sunset);">Sunset <code>--ag-grad-sunset</code></div>
+        <div class="ag-swatch-tile ag-holo">Holographic <code>.ag-holo</code></div>
+      </div>
+      <div class="ag-grid" style="margin-top: var(--ag-space-4);">
+        <div class="ag-swatch-tile" style="background: var(--ag-pink-hot);">Hot Pink <code>#ff2e9a</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-purple);">Unicorn Purple <code>#9b4dff</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-cyan); color: var(--ag-grape-800); text-shadow: none;">Mermaid Cyan <code>#00f0ff</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-lime); color: var(--ag-grape-800); text-shadow: none;">Slime Lime <code>#8dff3a</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-yellow); color: var(--ag-grape-800); text-shadow: none;">Star Yellow <code>#ffe93a</code></div>
+        <div class="ag-swatch-tile" style="background: var(--ag-orange);">Sherbet <code>#ff9a3a</code></div>
+      </div>
+    </section>
+
+    <hr class="ag-divider" />
+
+    <!-- ✒️ TYPOGRAPHY -->
+    <section class="ag-section" id="type">
+      <div class="section-head">
+        <span class="ag-eyebrow">Foundations</span>
+        <h2>✒️ Typography</h2>
+        <p class="ag-muted">Editorial <strong>Fraunces</strong> + workhorse <strong>Inter</strong> at low vibe. Bubbly <strong>Baloo 2</strong> + <strong>Quicksand</strong> at party tier.</p>
+      </div>
+      <div class="ag-card ag-glitter">
+        <h1 class="ag-text-gradient">Aa Bb Cc 123</h1>
+        <h2 class="ag-text-holo">Holographic Heading</h2>
+        <h3>Bubble Subheading 🫧</h3>
+        <p>Body copy stays calm and readable so the magic never hurts comprehension. Fonts threshold-swap at vibe ≥ 0.85 — Fraunces's variable SOFT axis handles the rest of the smooth in-between.</p>
+        <div class="demo-row" style="margin-top: var(--ag-space-3);">
+          <span class="ag-badge">Display: Fraunces → Baloo 2</span>
+          <span class="ag-badge ag-badge--cyan">Body: Inter → Quicksand</span>
+          <span class="ag-badge ag-badge--purple">Scale: 1.25 ratio</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="ag-divider" />
+
+    <!-- 🔘 BUTTONS -->
+    <section class="ag-section" id="buttons">
+      <div class="section-head">
+        <span class="ag-eyebrow">Components</span>
+        <h2>🔘 Buttons</h2>
+      </div>
+      <div class="demo-row">
+        <button class="ag-btn ag-btn--rainbow">Rainbow</button>
+        <button class="ag-btn ag-btn--sunset">Sunset</button>
+        <button class="ag-btn ag-btn--mermaid">Mermaid</button>
+        <button class="ag-btn ag-btn--dolphin">Dolphin</button>
+        <button class="ag-btn ag-btn--ghost">Ghost</button>
+      </div>
+      <div class="demo-row" style="margin-top: var(--ag-space-4);">
+        <button class="ag-btn ag-btn--sm ag-btn--rainbow">Small ✨</button>
+        <button class="ag-btn ag-btn--rainbow">Default 🌈</button>
+        <button class="ag-btn ag-btn--lg ag-btn--rainbow">Large 🦄</button>
+      </div>
+      <div class="demo-row" style="margin-top: var(--ag-space-4);">
+        <button class="ag-btn ag-btn--primary">Primary</button>
+        <button class="ag-btn ag-btn--secondary">Secondary</button>
+        <button class="ag-btn ag-btn--danger">Delete</button>
+        <button class="ag-btn ag-btn--primary" disabled>Disabled</button>
+      </div>
+    </section>
+
+    <hr class="ag-divider" />
+
+    <!-- 🃏 CARDS -->
+    <section class="ag-section" id="cards">
+      <div class="section-head">
+        <span class="ag-eyebrow">Components</span>
+        <h2>🃏 Cards</h2>
+      </div>
+      <div class="ag-grid">
+        <article class="ag-card ag-glitter">
+          <span class="ag-card__emoji ag-bob">🐬</span>
+          <h3 class="ag-card__title">Dolphin Card</h3>
+          <p class="ag-muted">A glittery surface card. Hover for a playful tilt and lift — intensity scales with vibe.</p>
+          <span class="ag-badge ag-badge--cyan" style="margin-top: var(--ag-space-3);">New</span>
+        </article>
+        <article class="ag-card ag-card--gradient">
+          <span class="ag-card__emoji ag-float">🦄</span>
+          <h3 class="ag-card__title">Gradient Card</h3>
+          <p>Cotton-candy gradient surface with white text for punchy promos.</p>
+        </article>
+        <article class="ag-card ag-card--holo ag-glitter">
+          <span class="ag-card__emoji ag-spin">🌈</span>
+          <h3 class="ag-card__title">Holographic Card</h3>
+          <p class="ag-muted">Iridescent animated foil that shifts as you scroll.</p>
+        </article>
+      </div>
+    </section>
+
+    <hr class="ag-divider" />
+
+    <!-- ⌨️ FORMS -->
+    <section class="ag-section" id="forms">
+      <div class="section-head">
+        <span class="ag-eyebrow">Components</span>
+        <h2>⌨️ Forms &amp; Feedback</h2>
+      </div>
+      <div class="ag-grid">
+        <div class="ag-card ag-stack">
+          <div class="ag-field">
+            <label class="ag-label" for="name">Your magical name 🌟</label>
+            <input class="ag-input" id="name" type="text" placeholder="Sparkle McRainbow" />
+          </div>
+          <div class="ag-field">
+            <label class="ag-label" for="wish">Make a wish 🪄</label>
+            <textarea class="ag-textarea" id="wish" placeholder="I wish for infinite glitter…"></textarea>
+          </div>
+          <div class="demo-row">
+            <label class="ag-toggle">
+              <input type="checkbox" checked />
+              <span class="ag-toggle__track"></span>
+            </label>
+            <span class="ag-label">Unicorn mode</span>
+          </div>
+          <button class="ag-btn ag-btn--rainbow ag-sparkle-target" id="btn-save">Cast Spell ✨</button>
+        </div>
+        <div class="ag-stack">
+          <div class="ag-alert ag-alert--success" role="status">
+            <span class="ag-alert__icon" aria-hidden="true">🎉</span>
+            <div><div class="ag-alert__title">Success!</div><div class="ag-alert__body">Your sparkles have been saved.</div></div>
+          </div>
+          <div class="ag-alert" role="status">
+            <span class="ag-alert__icon" aria-hidden="true">🐬</span>
+            <div><div class="ag-alert__title">Heads up</div><div class="ag-alert__body">Dolphins incoming.</div></div>
+          </div>
+          <div class="ag-alert ag-alert--warning" role="status">
+            <span class="ag-alert__icon" aria-hidden="true">🦄</span>
+            <div><div class="ag-alert__title">Pro tip</div><div class="ag-alert__body">Hover everything.</div></div>
+          </div>
+          <div class="ag-stack-sm">
+            <span class="ag-label">Magic level</span>
+            <div class="ag-progress"><div class="ag-progress__bar" style="width: 88%;"></div></div>
+          </div>
+          <div class="demo-row">
+            <span class="ag-badge">Sparkly</span>
+            <span class="ag-badge ag-badge--cyan">Dreamy</span>
+            <span class="ag-badge ag-badge--purple">Magical</span>
+            <span class="ag-badge ag-badge--lime">Kawaii</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="ag-divider" />
+
+    <!-- 🗂️ TABS + TABLE -->
+    <section class="ag-section" id="overlays">
+      <div class="section-head">
+        <span class="ag-eyebrow">Components</span>
+        <h2>🗂️ Tabs &amp; Table</h2>
+      </div>
+
+      <div class="ag-tabs" role="tablist" aria-label="Magical worlds">
+        <button class="ag-tab" role="tab" aria-selected="true">🦄 Unicorns</button>
+        <button class="ag-tab" role="tab" aria-selected="false">🐬 Dolphins</button>
+        <button class="ag-tab" role="tab" aria-selected="false">⭐ Stars</button>
+      </div>
+      <div style="padding-top: var(--ag-space-5);">
+        <table class="ag-table ag-table--holo">
+          <thead>
+            <tr><th>Component</th><th>Status</th><th>Owner</th><th>Last touched</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Button</td><td><span class="ag-badge ag-badge--success"><span class="ag-badge__dot"></span> Stable</span></td><td>Kate</td><td>2h ago</td></tr>
+            <tr><td>Card</td><td><span class="ag-badge ag-badge--success"><span class="ag-badge__dot"></span> Stable</span></td><td>Kate</td><td>3h ago</td></tr>
+            <tr><td>Toast</td><td><span class="ag-badge ag-badge--warning"><span class="ag-badge__dot"></span> Beta</span></td><td>Kate</td><td>1d ago</td></tr>
+            <tr><td>DataGrid</td><td><span class="ag-badge ag-badge--cyan"><span class="ag-badge__dot"></span> Planned</span></td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="ag-container">
+    <hr class="ag-divider" />
+    <p class="ag-text-gradient" style="font-family: var(--ag-font-display); font-weight: 800; font-size: var(--ag-text-xl);">
+      Stay sparkly ✨🦄🌈🐬💖
+    </p>
+    <p class="ag-muted">Afterglow — a design system with a saturation knob. A grown-up sibling of <a href="../">UnicornMagic</a>.</p>
+    <p class="ag-muted" style="margin-top: var(--ag-space-2); font-size: var(--ag-text-xs);">
+      <kbd>Alt</kbd> + <kbd>V</kbd> cycles vibe presets · <kbd>Alt</kbd> + <kbd>T</kbd> cycles themes
+    </p>
+  </footer>
+
   <script>
-    // The one script this system needs: the vibe dial + theme switcher.
     (function () {
       const root = document.documentElement;
       const slider = document.getElementById('vibe-slider');
@@ -532,7 +335,6 @@
         v = Math.max(0, Math.min(1, +v));
         root.style.setProperty('--ag-vibe', v.toFixed(2));
         root.style.setProperty('--ag-vibe-anim-play', v < 0.05 ? 'paused' : 'running');
-        // Threshold tier — flips fonts and other categorical switches
         let tier = 'mid';
         if (v <= 0.1) tier = 'calm';
         else if (v >= 0.85) tier = 'party';
@@ -542,8 +344,7 @@
         localStorage.setItem('ag-vibe', v);
       };
       const setTheme = (t) => {
-        if (t) root.setAttribute('data-theme', t);
-        else root.removeAttribute('data-theme');
+        if (t) root.setAttribute('data-theme', t); else root.removeAttribute('data-theme');
         themeSel.value = t || '';
         localStorage.setItem('ag-theme', t || '');
       };
@@ -554,9 +355,21 @@
       });
       themeSel.addEventListener('change', (e) => setTheme(e.target.value));
 
-      // Restore
       setVibe(localStorage.getItem('ag-vibe') ?? 0.55);
       setTheme(localStorage.getItem('ag-theme') || '');
+
+      // Sparkle-on-save demo
+      const saveBtn = document.getElementById('btn-save');
+      if (saveBtn) saveBtn.addEventListener('click', () => {
+        saveBtn.classList.add('is-sparkling', 'ag-celebrate');
+        setTimeout(() => saveBtn.classList.remove('is-sparkling', 'ag-celebrate'), 900);
+      });
+
+      // Simple tabs
+      const tabs = document.querySelectorAll('[role=tab]');
+      tabs.forEach((t) => t.addEventListener('click', () => {
+        tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+      }));
 
       // Keyboard shortcuts
       const presets = [0, 0.3, 0.55, 0.8, 1];
@@ -566,13 +379,6 @@
         if (!e.altKey) return;
         if (e.key.toLowerCase() === 'v') { vi = (vi + 1) % presets.length; setVibe(presets[vi]); }
         if (e.key.toLowerCase() === 't') { ti = (ti + 1) % themes.length;  setTheme(themes[ti]); }
-      });
-
-      // Sparkle-on-save demo
-      const saveBtn = document.getElementById('btn-save');
-      saveBtn.addEventListener('click', () => {
-        saveBtn.classList.add('is-sparkling', 'ag-celebrate');
-        setTimeout(() => saveBtn.classList.remove('is-sparkling', 'ag-celebrate'), 900);
       });
     })();
   </script>
