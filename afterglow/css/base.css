@@ -1,0 +1,207 @@
+/* ============================================================
+   AFTERGLOW — BASE
+   Reset, typography, canvas. Reads only from semantic tokens.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--ag-font-body);
+  font-weight: var(--ag-weight-regular);
+  font-size: var(--ag-text-md);
+  line-height: var(--ag-leading-normal);
+  color: var(--ag-color-ink);
+  background: var(--ag-color-bg) var(--ag-grad-page) fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Display headings use Fraunces variable axes — the "grown-up but fun" secret */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-semi);
+  line-height: var(--ag-leading-tight);
+  letter-spacing: var(--ag-tracking-tight);
+  color: var(--ag-color-ink);
+  /* opsz + SOFT axes give warmth without becoming cartoonish */
+  font-variation-settings: 'opsz' 144, 'SOFT' 50, 'WONK' 0;
+}
+
+h1 { font-size: var(--ag-text-4xl); font-weight: var(--ag-weight-bold); }
+h2 { font-size: var(--ag-text-3xl); }
+h3 { font-size: var(--ag-text-2xl); }
+h4 { font-size: var(--ag-text-xl); }
+h5 { font-size: var(--ag-text-lg); }
+h6 { font-size: var(--ag-text-md); text-transform: uppercase; letter-spacing: var(--ag-tracking-wider); }
+
+/* Vibe dial scales display softness — subtle at boardroom, wonky at rave */
+h1, h2, h3 {
+  font-variation-settings: 'opsz' 144,
+                           'SOFT' calc(20 + var(--ag-vibe) * 80),
+                           'WONK' 0;
+}
+
+p { max-width: 68ch; }
+p + p { margin-top: var(--ag-space-4); }
+
+small { font-size: var(--ag-text-sm); color: var(--ag-color-ink-muted); }
+
+a {
+  color: var(--ag-color-accent);
+  font-weight: var(--ag-weight-medium);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--ag-motion-acknowledge);
+}
+a:hover { color: var(--ag-color-accent-hover); }
+
+code, kbd, pre, samp {
+  font-family: var(--ag-font-mono);
+  font-size: 0.92em;
+}
+code:not(pre code) {
+  background: var(--ag-color-surface-sunk);
+  padding: 0.1em 0.35em;
+  border-radius: var(--ag-radius-xs);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--ag-color-border);
+  margin-block: var(--ag-space-6);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ag-color-focus);
+  outline-offset: 3px;
+  border-radius: var(--ag-radius-sm);
+  box-shadow: var(--ag-focus-ring);
+}
+
+::selection {
+  background: var(--ag-color-accent);
+  color: var(--ag-color-accent-ink);
+}
+
+/* Scrollbar — restrained gradient, not a candy stick */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--ag-color-surface-sunk); }
+::-webkit-scrollbar-thumb {
+  background: var(--ag-color-border-strong);
+  border-radius: var(--ag-radius-pill);
+  border: 3px solid var(--ag-color-surface-sunk);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ag-color-accent); }
+
+/* --------------------------------------------------------
+   Layout primitives
+   -------------------------------------------------------- */
+.ag-container {
+  width: min(1200px, 92vw);
+  margin-inline: auto;
+}
+
+.ag-section { padding-block: var(--ag-space-8); }
+.ag-section--tight { padding-block: var(--ag-space-6); }
+
+.ag-stack > * + * { margin-top: var(--ag-space-4); }
+.ag-stack-sm > * + * { margin-top: var(--ag-space-2); }
+.ag-stack-lg > * + * { margin-top: var(--ag-space-6); }
+
+.ag-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ag-space-3);
+  align-items: center;
+}
+
+.ag-grid {
+  display: grid;
+  gap: var(--ag-space-5);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.ag-divide > * + * {
+  border-top: 1px solid var(--ag-color-border);
+  padding-top: var(--ag-space-5);
+  margin-top: var(--ag-space-5);
+}
+
+/* --------------------------------------------------------
+   Type utilities
+   -------------------------------------------------------- */
+.ag-eyebrow {
+  font-family: var(--ag-font-body);
+  font-weight: var(--ag-weight-semi);
+  text-transform: uppercase;
+  letter-spacing: var(--ag-tracking-wider);
+  font-size: var(--ag-text-xs);
+  color: var(--ag-color-accent);
+}
+
+.ag-lede {
+  font-size: var(--ag-text-lg);
+  line-height: var(--ag-leading-snug);
+  color: var(--ag-color-ink-muted);
+  max-width: 60ch;
+}
+
+.ag-muted   { color: var(--ag-color-ink-muted); }
+.ag-subtle  { color: var(--ag-color-ink-subtle); }
+.ag-center  { text-align: center; }
+
+.ag-text-gradient {
+  background: var(--ag-grad-rainbow);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  animation: ag-rainbow-shift calc(8s / var(--ag-vibe-motion-amp)) linear infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+}
+
+.ag-text-holo {
+  background: var(--ag-grad-holo);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+
+@keyframes ag-rainbow-shift {
+  to { background-position: 200% center; }
+}
+
+/* --------------------------------------------------------
+   Reduced motion — hard override
+   -------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Reduced transparency — respect the OS setting */
+@media (prefers-reduced-transparency: reduce) {
+  :root { --ag-grad-page: var(--ag-color-bg); }
+}
