@@ -37,8 +37,13 @@
               color var(--ag-motion-acknowledge);
   box-shadow: var(--ag-shadow-xs);
 }
-.ag-btn:hover  { transform: translateY(-1px); box-shadow: var(--ag-shadow-sm); }
-.ag-btn:active { transform: translateY(0); box-shadow: var(--ag-shadow-xs); }
+/* Hover intensity scales with vibe */
+.ag-btn:hover {
+  transform: translateY(calc(-1px - var(--ag-vibe) * 2px))
+             scale(calc(1 + var(--ag-vibe) * 0.03));
+  box-shadow: var(--ag-shadow-sm);
+}
+.ag-btn:active { transform: translateY(0) scale(0.98); box-shadow: var(--ag-shadow-xs); }
 .ag-btn:disabled,
 .ag-btn[aria-disabled='true'] {
   opacity: 0.5;
@@ -102,13 +107,17 @@
 .ag-card {
   background: var(--ag-color-surface);
   color: var(--ag-color-ink);
-  border: 1px solid var(--ag-color-border);
+  border: calc(1px + var(--ag-vibe) * 2px) solid var(--ag-color-border);
   border-radius: var(--ag-radius-lg);
   padding: var(--ag-space-5);
   box-shadow: var(--ag-shadow-sm);
   transition: box-shadow var(--ag-motion-transition), transform var(--ag-motion-transition);
 }
-.ag-card:hover { box-shadow: var(--ag-shadow-md); transform: translateY(-2px); }
+.ag-card:hover {
+  box-shadow: var(--ag-shadow-md);
+  transform: translateY(calc(-2px - var(--ag-vibe) * 4px))
+             rotate(calc(var(--ag-vibe) * -0.6deg));
+}
 
 .ag-card__header {
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -559,4 +568,209 @@ kbd, .ag-kbd {
   border-bottom-width: 2px;
   border-radius: var(--ag-radius-xs);
   line-height: 1.4;
+}
+
+/* ================================================
+   ★ PARTY-TIER OVERRIDES ★
+   Applied by JS when vibe >= 0.85 via <html data-vibe-tier="party">.
+   These are categorical moves the original UnicornMagic makes that
+   don't interpolate cleanly: pill radii, 3px pink input borders,
+   gradient badges, tilt-on-hover cards, upper-case display type.
+   Together with the font swap they should render vibe=1 as full UM.
+   ================================================ */
+
+/* Buttons — pill, display font, big bounce, rainbow hover glow */
+[data-vibe-tier='party'] .ag-btn {
+  border-radius: var(--ag-radius-pill);
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+  padding: 0.7em 1.8em;
+  text-shadow: 0 1px 2px rgba(42, 10, 61, 0.25);
+  border: none;
+  box-shadow: var(--ag-shadow-md);
+}
+[data-vibe-tier='party'] .ag-btn--primary,
+[data-vibe-tier='party'] .ag-btn--rainbow,
+[data-vibe-tier='party'] .ag-btn--danger { color: var(--ag-white); }
+[data-vibe-tier='party'] .ag-btn:hover {
+  box-shadow: var(--ag-shadow-lg), var(--ag-glow-rainbow);
+}
+[data-vibe-tier='party'] .ag-btn--ghost {
+  background: var(--ag-white);
+  color: var(--ag-magenta);
+  text-shadow: none;
+  box-shadow: var(--ag-shadow-sm);
+}
+[data-vibe-tier='party'] .ag-btn--secondary {
+  background: var(--ag-grad-cotton);
+  color: var(--ag-white);
+  text-shadow: 0 1px 2px rgba(42, 10, 61, 0.25);
+}
+
+/* Cards — thicker border, deeper shadow */
+[data-vibe-tier='party'] .ag-card {
+  border-radius: var(--ag-radius-xl);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow: var(--ag-shadow-md);
+  padding: var(--ag-space-6);
+}
+[data-vibe-tier='party'] .ag-card__title {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-black);
+}
+[data-vibe-tier='party'] .ag-card--feature {
+  border-image: var(--ag-grad-rainbow) 1;
+}
+
+/* Badges — gradient fills, upper display type */
+[data-vibe-tier='party'] .ag-badge {
+  background: var(--ag-grad-sunset);
+  color: var(--ag-white);
+  border-color: transparent;
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--ag-tracking-wide);
+  padding: 0.3em 0.9em;
+  box-shadow: var(--ag-shadow-sm);
+}
+[data-vibe-tier='party'] .ag-badge--accent  { background: var(--ag-grad-unicorn); }
+[data-vibe-tier='party'] .ag-badge--info    { background: var(--ag-grad-dolphin); }
+[data-vibe-tier='party'] .ag-badge--success {
+  background: linear-gradient(135deg, var(--ag-lime), var(--ag-teal));
+  color: var(--ag-grape-800);
+  text-shadow: none;
+}
+[data-vibe-tier='party'] .ag-badge--warning {
+  background: linear-gradient(135deg, var(--ag-orange), var(--ag-yellow));
+  color: var(--ag-grape-800);
+  text-shadow: none;
+}
+[data-vibe-tier='party'] .ag-badge--danger {
+  background: linear-gradient(135deg, var(--ag-pink-hot), var(--ag-coral));
+}
+[data-vibe-tier='party'] .ag-badge__dot { background: rgba(255, 255, 255, 0.85); }
+
+/* Sticker — peel-corner shadow + wider tilt */
+[data-vibe-tier='party'] .ag-sticker {
+  background: var(--ag-white);
+  color: var(--ag-grape-800);
+  border: 2px solid var(--ag-cloud-2);
+  box-shadow: 0 4px 0 rgba(42, 10, 61, 0.15), var(--ag-shadow-sm);
+  transform: rotate(-3deg);
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='party'] .ag-sticker:hover { transform: rotate(0deg) scale(1.05); }
+
+/* Inputs — 3px pink-bubble border, violet focus glow */
+[data-vibe-tier='party'] .ag-input,
+[data-vibe-tier='party'] .ag-textarea,
+[data-vibe-tier='party'] .ag-select {
+  border-width: 3px;
+  border-color: var(--ag-pink-bubble);
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='party'] .ag-input:focus,
+[data-vibe-tier='party'] .ag-textarea:focus,
+[data-vibe-tier='party'] .ag-select:focus {
+  border-color: var(--ag-violet);
+  box-shadow: var(--ag-glow-purple);
+}
+[data-vibe-tier='party'] .ag-label {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+}
+
+/* Nav — pill, sticky-friendly, thick transparent border */
+[data-vibe-tier='party'] .ag-nav {
+  border-radius: var(--ag-radius-pill);
+  border-width: 3px;
+  padding: var(--ag-space-3) var(--ag-space-5);
+}
+[data-vibe-tier='party'] .ag-nav__brand {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-black);
+}
+[data-vibe-tier='party'] .ag-nav__link[aria-current='page'] {
+  background: var(--ag-grad-unicorn);
+  color: var(--ag-white);
+  border-radius: var(--ag-radius-pill);
+}
+
+/* Tabs — pill container, active tab gets unicorn gradient */
+[data-vibe-tier='party'] .ag-tabs {
+  display: inline-flex;
+  gap: var(--ag-space-1);
+  padding: var(--ag-space-1);
+  background: var(--ag-color-surface-2);
+  border-radius: var(--ag-radius-pill);
+  border-bottom: none;
+  box-shadow: inset 0 2px 6px rgba(42, 10, 61, 0.15);
+}
+[data-vibe-tier='party'] .ag-tab {
+  border-radius: var(--ag-radius-pill);
+  border-bottom: none;
+  margin-bottom: 0;
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+  padding: 0.55em 1.4em;
+}
+[data-vibe-tier='party'] .ag-tab[aria-selected='true'] {
+  background: var(--ag-grad-unicorn);
+  color: var(--ag-white);
+  border-bottom: none;
+}
+
+/* Progress — always-animated rainbow with pink border */
+[data-vibe-tier='party'] .ag-progress {
+  height: 18px;
+  border: 2px solid var(--ag-pink-bubble);
+  background: var(--ag-cloud-2);
+}
+[data-vibe-tier='party'] .ag-progress__bar {
+  background: var(--ag-grad-rainbow);
+  background-size: 200% auto;
+  animation: ag-rainbow-shift 3s linear infinite;
+}
+
+/* Alerts — thicker sunset border, display font */
+[data-vibe-tier='party'] .ag-alert {
+  border-left-width: 8px;
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='party'] .ag-alert__title {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-black);
+}
+
+/* Modal — rainbow glow */
+[data-vibe-tier='party'] .ag-modal {
+  border-radius: var(--ag-radius-xl);
+  border: 3px solid transparent;
+  box-shadow: var(--ag-shadow-lg), var(--ag-glow-rainbow);
+}
+
+/* Table — holo header stays vivid, header type gets display font */
+[data-vibe-tier='party'] .ag-table {
+  border-radius: var(--ag-radius-lg);
+  border-width: 3px;
+}
+[data-vibe-tier='party'] .ag-table thead th {
+  font-family: var(--ag-font-display);
+  font-weight: var(--ag-weight-bold);
+}
+
+/* Toggle — dolphin gradient when on, unicorn emoji thumb (a wink) */
+[data-vibe-tier='party'] .ag-toggle input:checked ~ .ag-toggle__track {
+  background: var(--ag-grad-dolphin);
+}
+[data-vibe-tier='party'] .ag-toggle__track::after {
+  background: var(--ag-white) center/60% no-repeat;
+}
+
+/* Focus ring — pink dashed at party tier, matching UM */
+[data-vibe-tier='party'] :focus-visible {
+  outline: 3px dashed var(--ag-violet);
+  outline-offset: 3px;
 }
