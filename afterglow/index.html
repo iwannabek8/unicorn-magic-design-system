@@ -84,8 +84,8 @@
     <div style="display: flex; gap: var(--ag-space-2); align-items: center;">
       <label class="vibe-mini" title="Drag to change the vibe">
         <span>Vibe</span>
-        <input id="vibe-slider" type="range" min="0" max="1" step="0.01" value="0.55" />
-        <span id="vibe-readout" class="vibe-mini__readout">0.55</span>
+        <input id="vibe-slider" type="range" min="0" max="1" step="0.01" value="0" />
+        <span id="vibe-readout" class="vibe-mini__readout">0.00</span>
       </label>
       <a class="ag-btn ag-btn--sm ag-btn--rainbow" href="#get-started">Get Magic <span class="ag-emoji" aria-hidden="true">✨</span></a>
     </div>
@@ -339,7 +339,6 @@
         root.setAttribute('data-vibe-tier', tier);
         readout.textContent = v.toFixed(2);
         slider.value = v;
-        localStorage.setItem('ag-vibe', v);
       };
 
       slider.addEventListener('input', (e) => setVibe(e.target.value));
@@ -347,7 +346,8 @@
         btn.addEventListener('click', () => setVibe(btn.dataset.vibePreset));
       });
 
-      setVibe(localStorage.getItem('ag-vibe') ?? 0.55);
+      // Always start at 0 — the reveal is dialing UP
+      setVibe(0);
 
       // Sparkle-on-save demo
       const saveBtn = document.getElementById('btn-save');
