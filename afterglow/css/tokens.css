@@ -1,0 +1,370 @@
+/* ============================================================
+   AFTERGLOW — DESIGN TOKENS
+   The party's still here. It just learned to make eye contact.
+
+   Layer 1: Brand primitives (the DNA — unchanged joy)
+   Layer 2: Semantic aliases (what components actually consume)
+   Layer 3: The Vibe Dial (--ag-vibe) — one knob, whole system
+   ============================================================ */
+
+:root {
+  /* ========================================================
+     LAYER 1 — BRAND PRIMITIVES
+     Raw pigments. Components should NEVER read these directly.
+     Reach for the semantic tokens in Layer 2 instead.
+     ======================================================== */
+
+  /* Signature spectrum */
+  --ag-pink-hot:      #ff2e9a;
+  --ag-pink-bubble:   #ff7ac8;
+  --ag-magenta:       #d6149c;
+  --ag-purple:        #9b4dff;
+  --ag-violet:        #6a2cff;
+  --ag-blue-sky:      #2ec5ff;
+  --ag-blue-electric: #1597ff;
+  --ag-cyan:          #00f0ff;
+  --ag-teal:          #1fffce;
+  --ag-lime:          #8dff3a;
+  --ag-yellow:        #ffe93a;
+  --ag-orange:        #ff9a3a;
+  --ag-coral:         #ff5a6e;
+
+  /* Grown-up neutrals — deep grape lineage, but with a full ramp */
+  --ag-grape-950: #150322;
+  --ag-grape-900: #1f0632;
+  --ag-grape-800: #2a0a3d;   /* legacy --lf-ink */
+  --ag-grape-700: #3d1657;
+  --ag-grape-600: #5a3a72;   /* legacy --lf-ink-soft */
+  --ag-grape-500: #7a5a92;
+  --ag-grape-400: #a58fbf;
+  --ag-grape-300: #cbb8dd;
+  --ag-grape-200: #e5d8ee;
+  --ag-grape-100: #f3ebf8;
+  --ag-grape-50:  #faf5fd;
+
+  /* Snow neutrals for cool light surfaces */
+  --ag-cloud:     #fff5fb;
+  --ag-cloud-2:   #ffeaf7;
+  --ag-white:     #ffffff;
+
+  /* "Anchor" restrained hues used at low vibe.
+     Everything vibe-interpolates FROM these TOWARD the neon primitives. */
+  --ag-anchor-accent:      #6a1e52;   /* deep plum — reads as a mature CTA */
+  --ag-anchor-accent-hover:#4d1339;
+  --ag-anchor-grad-a:      #3d1657;   /* grape-700 */
+  --ag-anchor-grad-b:      #2a0a3d;   /* grape-800 */
+  --ag-anchor-grad-c:      #150322;   /* grape-950 */
+
+  /* Signal colors — tuned to sit next to gradients without clashing */
+  --ag-success-500: #1f9d6b;
+  --ag-success-100: #d4f2e3;
+  --ag-warning-500: #d97706;
+  --ag-warning-100: #fde8cc;
+  --ag-danger-500:  #c8123c;
+  --ag-danger-100:  #fbd7e0;
+  --ag-info-500:    #1597ff;
+  --ag-info-100:    #d0ebff;
+
+  /* ========================================================
+     GRADIENTS — the soul, kept intact
+     ======================================================== */
+  --ag-grad-rainbow: linear-gradient(
+    100deg,
+    var(--ag-pink-hot) 0%,
+    var(--ag-orange) 18%,
+    var(--ag-yellow) 34%,
+    var(--ag-lime) 50%,
+    var(--ag-cyan) 66%,
+    var(--ag-violet) 84%,
+    var(--ag-pink-hot) 100%
+  );
+  --ag-grad-rainbow-soft: linear-gradient(
+    120deg, #ffd6f2 0%, #ffe9c7 25%, #d9ffd1 50%, #c9f4ff 75%, #e6d6ff 100%
+  );
+  --ag-grad-sunset:  linear-gradient(135deg, var(--ag-pink-hot), var(--ag-orange), var(--ag-yellow));
+  --ag-grad-cotton:  linear-gradient(135deg, var(--ag-pink-bubble), var(--ag-purple), var(--ag-cyan));
+  --ag-grad-mermaid: linear-gradient(135deg, var(--ag-cyan), var(--ag-teal), var(--ag-violet));
+  --ag-grad-unicorn: linear-gradient(135deg, var(--ag-pink-hot), var(--ag-purple), var(--ag-blue-electric));
+  --ag-grad-dolphin: linear-gradient(160deg, var(--ag-blue-sky), var(--ag-cyan), var(--ag-teal));
+
+  /* Holographic foil — the signature */
+  --ag-grad-holo: linear-gradient(
+    115deg,
+    #ffb3ec 0%, #b3e6ff 20%, #c8ffd4 40%, #fff4b3 55%,
+    #ffb3c8 70%, #d4b3ff 85%, #b3fff0 100%
+  );
+
+  --ag-grad-conic: conic-gradient(
+    from 0deg,
+    var(--ag-pink-hot), var(--ag-orange), var(--ag-yellow),
+    var(--ag-lime), var(--ag-cyan), var(--ag-violet), var(--ag-pink-hot)
+  );
+
+  /* Page wash — opacity of the dreamy multi-radial scales with vibe.
+     At vibe 0: near-white paper. At vibe 1: full UnicornMagic dreamscape. */
+  --ag-grad-page:
+    radial-gradient(circle at 12% 18%, rgba(255, 122, 200, calc(0.55 * var(--ag-vibe))), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(46, 197, 255,  calc(0.5  * var(--ag-vibe))), transparent 40%),
+    radial-gradient(circle at 78% 82%, rgba(155, 77, 255,  calc(0.5  * var(--ag-vibe))), transparent 44%),
+    radial-gradient(circle at 22% 88%, rgba(141, 255, 58,  calc(0.42 * var(--ag-vibe))), transparent 42%),
+    linear-gradient(135deg,
+      color-mix(in oklab, #fafafa, #fff0fa calc(var(--ag-vibe) * 100%)) 0%,
+      color-mix(in oklab, #f7f7f9, #f3e8ff calc(var(--ag-vibe) * 100%)) 50%,
+      color-mix(in oklab, #f5f7fa, #e6fbff calc(var(--ag-vibe) * 100%)) 100%);
+
+  /* ========================================================
+     LAYER 2 — SEMANTIC TOKENS
+     Components consume these. Rename freely without touching Layer 1.
+     ======================================================== */
+
+  /* Surfaces — surface color drifts from clean white → pink-tinted cloud with vibe */
+  --ag-color-bg:            color-mix(in oklab, #fafafa, var(--ag-cloud)   calc(var(--ag-vibe) * 100%));
+  --ag-color-surface:       color-mix(in oklab, #ffffff, var(--ag-cloud)   calc(var(--ag-vibe) * 60%));
+  --ag-color-surface-2:     color-mix(in oklab, #f7f7f9, var(--ag-cloud-2) calc(var(--ag-vibe) * 100%));
+  --ag-color-surface-sunk:  color-mix(in oklab, #eef0f3, var(--ag-grape-100) calc(var(--ag-vibe) * 100%));
+  --ag-color-border:        color-mix(in oklab, #d8d8de, var(--ag-grape-200) calc(var(--ag-vibe) * 100%));
+  --ag-color-border-strong: color-mix(in oklab, #b8b8c2, var(--ag-grape-300) calc(var(--ag-vibe) * 100%));
+  --ag-color-overlay:       rgba(21, 3, 34, 0.55);
+
+  /* Text */
+  --ag-color-ink:         var(--ag-grape-800);
+  --ag-color-ink-muted:   var(--ag-grape-600);
+  --ag-color-ink-subtle:  var(--ag-grape-500);
+  --ag-color-ink-inverse: var(--ag-white);
+
+  /* Accent (brand) — interpolates from anchor plum at vibe 0 → hot pink at vibe 1.
+     Gradient built from three color-mixed stops so vibe 0 reads as a calm solid,
+     vibe 1 fully explodes into pink → purple → electric-blue UnicornMagic. */
+  --ag-color-accent:       color-mix(in oklab, var(--ag-anchor-accent),       var(--ag-pink-hot)       calc(var(--ag-vibe) * 100%));
+  --ag-color-accent-hover: color-mix(in oklab, var(--ag-anchor-accent-hover), var(--ag-magenta)        calc(var(--ag-vibe) * 100%));
+  --ag-color-accent-ink:   var(--ag-white);
+  --ag-color-accent-soft:  color-mix(in oklab, #f1e6ee, #ffe0ef                calc(var(--ag-vibe) * 100%));
+
+  --_ag-grad-a: color-mix(in oklab, var(--ag-anchor-grad-a), var(--ag-pink-hot)       calc(var(--ag-vibe) * 100%));
+  --_ag-grad-b: color-mix(in oklab, var(--ag-anchor-grad-b), var(--ag-purple)         calc(var(--ag-vibe) * 100%));
+  --_ag-grad-c: color-mix(in oklab, var(--ag-anchor-grad-c), var(--ag-blue-electric)  calc(var(--ag-vibe) * 100%));
+  --ag-color-accent-gradient: linear-gradient(135deg, var(--_ag-grad-a), var(--_ag-grad-b), var(--_ag-grad-c));
+
+  /* Status */
+  --ag-color-success:      var(--ag-success-500);
+  --ag-color-success-soft: var(--ag-success-100);
+  --ag-color-warning:      var(--ag-warning-500);
+  --ag-color-warning-soft: var(--ag-warning-100);
+  --ag-color-danger:       var(--ag-danger-500);
+  --ag-color-danger-soft:  var(--ag-danger-100);
+  --ag-color-info:         var(--ag-info-500);
+  --ag-color-info-soft:    var(--ag-info-100);
+
+  /* Focus */
+  --ag-color-focus: var(--ag-violet);
+  --ag-focus-ring:  0 0 0 3px rgba(106, 44, 255, 0.35);
+
+  /* ========================================================
+     TYPOGRAPHY — grown-up pairing
+     Display: Fraunces (variable, has SOFT + WONK axes for personality)
+     Body:    Inter    (neutral, workhorse)
+     Mono:    JetBrains Mono
+     ======================================================== */
+  --ag-font-display: 'Fraunces', 'Baloo 2', ui-serif, Georgia, serif;
+  --ag-font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ag-font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  /* Modular scale — 1.25 (major third) */
+  --ag-text-2xs: 0.694rem;
+  --ag-text-xs:  0.833rem;
+  --ag-text-sm:  0.9rem;
+  --ag-text-md:  1rem;
+  --ag-text-lg:  1.25rem;
+  --ag-text-xl:  1.563rem;
+  --ag-text-2xl: 1.953rem;
+  --ag-text-3xl: 2.441rem;
+  --ag-text-4xl: 3.052rem;
+  --ag-text-5xl: 3.815rem;
+
+  --ag-weight-regular: 400;
+  --ag-weight-medium:  500;
+  --ag-weight-semi:    600;
+  --ag-weight-bold:    700;
+  --ag-weight-black:   800;
+
+  --ag-leading-tight:  1.15;
+  --ag-leading-snug:   1.35;
+  --ag-leading-normal: 1.55;
+  --ag-leading-loose:  1.7;
+
+  --ag-tracking-tight: -0.01em;
+  --ag-tracking-wide:  0.04em;
+  --ag-tracking-wider: 0.12em;
+
+  /* ========================================================
+     SPACING — 4px base, unchanged
+     ======================================================== */
+  --ag-space-0: 0;
+  --ag-space-1: 0.25rem;
+  --ag-space-2: 0.5rem;
+  --ag-space-3: 0.75rem;
+  --ag-space-4: 1rem;
+  --ag-space-5: 1.5rem;
+  --ag-space-6: 2rem;
+  --ag-space-7: 3rem;
+  --ag-space-8: 4rem;
+  --ag-space-9: 6rem;
+
+  /* ========================================================
+     RADII — the vibe dial scales these
+     ======================================================== */
+  --ag-radius-scale: calc(0.35 + var(--ag-vibe) * 1.05); /* 0.35x @ boardroom → 1.4x @ rave */
+  --ag-radius-xs:   calc(0.25rem * var(--ag-radius-scale));
+  --ag-radius-sm:   calc(0.5rem  * var(--ag-radius-scale));
+  --ag-radius-md:   calc(0.9rem  * var(--ag-radius-scale));
+  --ag-radius-lg:   calc(1.4rem  * var(--ag-radius-scale));
+  --ag-radius-xl:   calc(2rem    * var(--ag-radius-scale));
+  --ag-radius-pill: 999px;
+  --ag-radius-blob: 42% 58% 63% 37% / 41% 44% 56% 59%;
+
+  /* ========================================================
+     ELEVATION — shadows tuned for both light + twilight
+     ======================================================== */
+  --ag-shadow-xs: 0 1px 2px rgba(42, 10, 61, 0.08);
+  --ag-shadow-sm: 0 2px 8px rgba(42, 10, 61, 0.10);
+  --ag-shadow-md: 0 8px 24px rgba(42, 10, 61, 0.14);
+  --ag-shadow-lg: 0 18px 44px rgba(42, 10, 61, 0.18);
+  --ag-shadow-xl: 0 30px 70px rgba(42, 10, 61, 0.22);
+
+  /* Glow accents — scale with vibe */
+  --ag-glow-pink:    0 0 calc(18px * var(--ag-vibe)) rgba(255, 46, 154, calc(0.6 * var(--ag-vibe)));
+  --ag-glow-cyan:    0 0 calc(18px * var(--ag-vibe)) rgba(0, 240, 255, calc(0.55 * var(--ag-vibe)));
+  --ag-glow-purple:  0 0 calc(18px * var(--ag-vibe)) rgba(155, 77, 255, calc(0.55 * var(--ag-vibe)));
+  --ag-glow-rainbow: 0 0 calc(16px * var(--ag-vibe)) rgba(255, 46, 154, calc(0.45 * var(--ag-vibe))),
+                     0 0 calc(32px * var(--ag-vibe)) rgba(0, 240, 255, calc(0.35 * var(--ag-vibe)));
+
+  /* ========================================================
+     MOTION — tokens with intent
+     ======================================================== */
+  --ag-ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ag-ease-emphasis:  cubic-bezier(0.2, 0, 0, 1);
+  --ag-ease-bounce:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ag-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+
+  --ag-dur-instant: 80ms;
+  --ag-dur-fast:    160ms;
+  --ag-dur-base:    240ms;
+  --ag-dur-slow:    420ms;
+  --ag-dur-celebrate: 900ms;
+
+  /* Motion intent tokens — components pick one based on meaning */
+  --ag-motion-transition:  var(--ag-dur-base)      var(--ag-ease-standard);
+  --ag-motion-acknowledge: var(--ag-dur-fast)      var(--ag-ease-decelerate);
+  --ag-motion-celebrate:   var(--ag-dur-celebrate) var(--ag-ease-bounce);
+
+  /* ========================================================
+     Z-INDEX
+     ======================================================== */
+  --ag-z-base:    1;
+  --ag-z-sticky:  10;
+  --ag-z-nav:     50;
+  --ag-z-overlay: 90;
+  --ag-z-modal:   100;
+  --ag-z-toast:   120;
+  --ag-z-tooltip: 150;
+  --ag-z-sparkle: 200;
+
+  /* ========================================================
+     ★ THE VIBE DIAL ★
+     One knob, whole system. 0 = boardroom, 1 = rave.
+     Consumers can override in :root, on a section, or per component.
+     Defaults to 0.5 — dressed-up, still fun.
+     ======================================================== */
+  --ag-vibe: 0.5;
+
+  /* Derived scalars — components consume these, not --ag-vibe directly */
+  --ag-vibe-sparkle-opacity: var(--ag-vibe);
+  --ag-vibe-glow-strength:   var(--ag-vibe);
+  --ag-vibe-gradient-sat:    calc(30% + var(--ag-vibe) * 120%);   /* 30% @ 0 → 150% @ 1 */
+  --ag-vibe-motion-amp:      calc(0.2 + var(--ag-vibe) * 1.1);    /* 0.2x → 1.3x */
+  --ag-vibe-anim-play:       running;   /* toggled to 'paused' at vibe 0 */
+}
+
+/* Vibe presets — apply as class or data-attribute on any element */
+[data-vibe='boardroom'] { --ag-vibe: 0;    --ag-vibe-anim-play: paused; }
+[data-vibe='weekday']   { --ag-vibe: 0.3; }
+[data-vibe='studio']    { --ag-vibe: 0.55; }
+[data-vibe='afterhours']{ --ag-vibe: 0.8; }
+[data-vibe='rave']      { --ag-vibe: 1; }
+[data-vibe='unicorn']   { --ag-vibe: 1; }
+
+/* ============================================================
+   THEMES — semantic remaps only. Never touches Layer 1.
+   ============================================================ */
+
+/* Twilight — mature dark theme. Gradients confined to accents. */
+[data-theme='twilight'] {
+  --ag-color-bg:            var(--ag-grape-950);
+  --ag-color-surface:       var(--ag-grape-900);
+  --ag-color-surface-2:     var(--ag-grape-800);
+  --ag-color-surface-sunk:  #0d0117;
+  --ag-color-border:        var(--ag-grape-700);
+  --ag-color-border-strong: var(--ag-grape-600);
+  --ag-color-overlay:       rgba(0, 0, 0, 0.7);
+
+  --ag-color-ink:         var(--ag-grape-100);
+  --ag-color-ink-muted:   var(--ag-grape-300);
+  --ag-color-ink-subtle:  var(--ag-grape-400);
+
+  --ag-color-accent-soft: rgba(255, 46, 154, 0.15);
+
+  --ag-color-success-soft: rgba(31, 157, 107, 0.18);
+  --ag-color-warning-soft: rgba(217, 119, 6, 0.2);
+  --ag-color-danger-soft:  rgba(200, 18, 60, 0.2);
+  --ag-color-info-soft:    rgba(21, 151, 255, 0.18);
+
+  --ag-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --ag-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.45);
+  --ag-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --ag-shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.55);
+  --ag-shadow-xl: 0 30px 70px rgba(0, 0, 0, 0.6);
+
+  --ag-grad-page: radial-gradient(circle at 12% 18%, rgba(255, 46, 154, 0.22), transparent 40%),
+    radial-gradient(circle at 88% 12%, rgba(0, 240, 255, 0.16), transparent 38%),
+    radial-gradient(circle at 78% 82%, rgba(155, 77, 255, 0.24), transparent 42%),
+    linear-gradient(160deg, #160a2e 0%, #1d0b3d 50%, #0e0820 100%);
+}
+
+/* High contrast — accessibility-first. Gradients flatten, borders on everything. */
+[data-theme='highcontrast'] {
+  --ag-color-bg:            #ffffff;
+  --ag-color-surface:       #ffffff;
+  --ag-color-surface-2:     #f3f3f3;
+  --ag-color-surface-sunk:  #e8e8e8;
+  --ag-color-border:        #000000;
+  --ag-color-border-strong: #000000;
+
+  --ag-color-ink:         #000000;
+  --ag-color-ink-muted:   #1a1a1a;
+  --ag-color-ink-subtle:  #333333;
+
+  --ag-color-accent:       #b3006e;
+  --ag-color-accent-hover: #8a0055;
+  --ag-color-accent-soft:  #ffe0f0;
+  --ag-color-accent-gradient: #b3006e;  /* flatten */
+
+  --ag-color-success: #006644;
+  --ag-color-warning: #8a4a00;
+  --ag-color-danger:  #a00028;
+  --ag-color-info:    #004a8a;
+
+  --ag-vibe: 0;
+  --ag-vibe-anim-play: paused;
+}
+
+/* Print — no gradients, no glows, black on white */
+@media print {
+  :root {
+    --ag-color-bg: #fff;
+    --ag-color-surface: #fff;
+    --ag-color-ink: #000;
+    --ag-color-accent: #000;
+    --ag-color-accent-gradient: #000;
+    --ag-vibe: 0;
+  }
+}
