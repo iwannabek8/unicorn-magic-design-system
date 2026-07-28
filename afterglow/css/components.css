@@ -101,6 +101,31 @@
   animation-play-state: var(--ag-vibe-anim-play);
 }
 
+/* Extra gradient variants — sunset / mermaid / dolphin */
+.ag-btn--sunset {
+  --_btn-bg: var(--ag-grad-sunset);
+  --_btn-ink: var(--ag-white);
+  --_btn-border: transparent;
+  background-size: 180% auto;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.ag-btn--mermaid {
+  --_btn-bg: var(--ag-grad-mermaid);
+  --_btn-ink: var(--ag-white);
+  --_btn-border: transparent;
+  background-size: 180% auto;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.ag-btn--dolphin {
+  --_btn-bg: var(--ag-grad-dolphin);
+  --_btn-ink: var(--ag-grape-800);
+  --_btn-border: transparent;
+  background-size: 180% auto;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+
 /* ================================================
    CARDS
    ================================================ */
@@ -141,6 +166,36 @@
   border: 2px solid transparent;
 }
 
+/* Full-fill gradient card — for punchy promos */
+.ag-card--gradient {
+  background: var(--ag-grad-cotton);
+  color: var(--ag-white);
+  border-color: transparent;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+}
+.ag-card--gradient .ag-card__title,
+.ag-card--gradient p { color: var(--ag-white); }
+.ag-card--gradient .ag-muted { color: rgba(255, 255, 255, 0.85); }
+
+/* Holographic animated foil card */
+.ag-card--holo {
+  background: var(--ag-grad-holo);
+  background-size: 300% 300%;
+  color: var(--ag-grape-800);
+  border-color: transparent;
+  filter: saturate(var(--ag-vibe-gradient-sat));
+  animation: ag-holo-drift calc(9s / var(--ag-vibe-motion-amp)) var(--ag-ease-standard) infinite;
+  animation-play-state: var(--ag-vibe-anim-play);
+}
+
+/* Card-emoji block — big feature emoji at top of card */
+.ag-card__emoji {
+  font-size: var(--ag-text-2xl);
+  display: block;
+  margin-bottom: var(--ag-space-2);
+  filter: drop-shadow(0 3px 5px rgba(42, 10, 61, 0.2));
+}
+
 /* ================================================
    BADGES & STATUS PILLS
    ================================================ */
@@ -163,6 +218,11 @@
 .ag-badge--warning { background: var(--ag-color-warning-soft); color: var(--ag-color-warning); border-color: transparent; }
 .ag-badge--danger  { background: var(--ag-color-danger-soft);  color: var(--ag-color-danger);  border-color: transparent; }
 .ag-badge--info    { background: var(--ag-color-info-soft);    color: var(--ag-color-info);    border-color: transparent; }
+
+/* Legacy-UM-parity variants — restrained at low vibe, gradient at party tier */
+.ag-badge--cyan   { background: var(--ag-color-info-soft);    color: var(--ag-color-info);    border-color: transparent; }
+.ag-badge--purple { background: var(--ag-color-accent-soft);  color: var(--ag-color-accent);  border-color: transparent; }
+.ag-badge--lime   { background: var(--ag-color-success-soft); color: var(--ag-color-success); border-color: transparent; }
 
 .ag-badge__dot {
   width: 0.5em; height: 0.5em; border-radius: 50%;
@@ -636,7 +696,14 @@ kbd, .ag-kbd {
   box-shadow: var(--ag-shadow-sm);
 }
 [data-vibe-tier='party'] .ag-badge--accent  { background: var(--ag-grad-unicorn); }
-[data-vibe-tier='party'] .ag-badge--info    { background: var(--ag-grad-dolphin); }
+[data-vibe-tier='party'] .ag-badge--info,
+[data-vibe-tier='party'] .ag-badge--cyan    { background: var(--ag-grad-dolphin); color: var(--ag-white); }
+[data-vibe-tier='party'] .ag-badge--purple  { background: var(--ag-grad-unicorn); color: var(--ag-white); }
+[data-vibe-tier='party'] .ag-badge--lime    {
+  background: linear-gradient(135deg, var(--ag-lime), var(--ag-teal));
+  color: var(--ag-grape-800);
+  text-shadow: none;
+}
 [data-vibe-tier='party'] .ag-badge--success {
   background: linear-gradient(135deg, var(--ag-lime), var(--ag-teal));
   color: var(--ag-grape-800);
