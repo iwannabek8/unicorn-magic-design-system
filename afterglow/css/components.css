@@ -991,3 +991,157 @@ kbd, .ag-kbd {
 [data-vibe-tier='calm'] .ag-alert { grid-template-columns: 1fr auto; }
 
 /* Focus ring stays visible — accessibility trumps aesthetic */
+
+/* ================================================
+   ★ WEEKDAY TIER OVERRIDES ★
+   Applied by JS at vibe 0.10–0.40. The "warm minimal" step:
+   decoration & emojis stay off, gradient variants collapse to solid ink,
+   but tokens interpolate slightly and hover motion is barely there.
+   This differentiates 0.30 from 0 (warm accent) AND from 0.55 (no deco yet).
+   ================================================ */
+[data-vibe-tier='weekday'] .ag-star,
+[data-vibe-tier='weekday'] .ag-shooting-star,
+[data-vibe-tier='weekday'] .ag-sparkle-diamond,
+[data-vibe-tier='weekday'] .ag-glitter::before { opacity: 0 !important; }
+
+[data-vibe-tier='weekday'] .ag-text-gradient,
+[data-vibe-tier='weekday'] .ag-text-holo {
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: var(--ag-color-ink);
+  animation: none;
+}
+
+[data-vibe-tier='weekday'] .ag-btn--rainbow,
+[data-vibe-tier='weekday'] .ag-btn--sunset,
+[data-vibe-tier='weekday'] .ag-btn--mermaid,
+[data-vibe-tier='weekday'] .ag-btn--dolphin {
+  background: var(--ag-color-ink);
+  color: var(--ag-color-ink-inverse);
+  animation: none;
+  box-shadow: var(--ag-shadow-xs);
+  text-shadow: none;
+  filter: none;
+}
+[data-vibe-tier='weekday'] .ag-btn--rainbow:hover,
+[data-vibe-tier='weekday'] .ag-btn--sunset:hover,
+[data-vibe-tier='weekday'] .ag-btn--mermaid:hover,
+[data-vibe-tier='weekday'] .ag-btn--dolphin:hover {
+  background: var(--ag-color-ink-muted);
+  box-shadow: var(--ag-shadow-sm);
+}
+
+/* Primary keeps interpolated accent — differentiator from calm */
+[data-vibe-tier='weekday'] .ag-btn--primary {
+  background: var(--ag-color-accent);
+  color: var(--ag-color-accent-ink);
+  filter: none;
+  box-shadow: var(--ag-shadow-xs);
+}
+
+[data-vibe-tier='weekday'] .ag-card--gradient,
+[data-vibe-tier='weekday'] .ag-card--holo {
+  background: var(--ag-color-surface);
+  color: var(--ag-color-ink);
+  border: 1px solid var(--ag-color-border);
+  animation: none;
+  filter: none;
+}
+[data-vibe-tier='weekday'] .ag-card--gradient .ag-card__title,
+[data-vibe-tier='weekday'] .ag-card--gradient p,
+[data-vibe-tier='weekday'] .ag-card--holo .ag-card__title,
+[data-vibe-tier='weekday'] .ag-card--holo p { color: var(--ag-color-ink); }
+
+/* Swatch tiles slightly warmer than calm — you can see there IS color */
+[data-vibe-tier='weekday'] .ag-swatch-tile {
+  filter: saturate(0.28);
+  color: var(--ag-color-ink);
+  text-shadow: none;
+  box-shadow: var(--ag-shadow-xs);
+  opacity: 0.75;
+}
+[data-vibe-tier='weekday'] .ag-swatch-tile code { color: var(--ag-color-ink-muted); }
+
+[data-vibe-tier='weekday'] .ag-sticker {
+  background: var(--ag-color-surface);
+  color: var(--ag-color-ink);
+  border: 1px solid var(--ag-color-border);
+  box-shadow: none;
+  transform: none !important;
+  filter: none;
+  font-family: var(--ag-font-body);
+  font-weight: var(--ag-weight-medium);
+  border-radius: var(--ag-radius-md);
+}
+
+[data-vibe-tier='weekday'] .ag-nav__brand { color: var(--ag-color-ink); }
+
+[data-vibe-tier='weekday'] .ag-divider {
+  height: 1px;
+  background: var(--ag-color-border);
+  animation: none;
+  filter: none;
+  border-radius: 0;
+}
+
+[data-vibe-tier='weekday'] .ag-progress__bar,
+[data-vibe-tier='weekday'] .ag-progress--rainbow .ag-progress__bar {
+  background: var(--ag-color-accent);
+  filter: none;
+  animation: none;
+}
+
+[data-vibe-tier='weekday'] .ag-badge--cyan,
+[data-vibe-tier='weekday'] .ag-badge--purple,
+[data-vibe-tier='weekday'] .ag-badge--lime {
+  background: var(--ag-color-surface-sunk);
+  color: var(--ag-color-ink-muted);
+  border: 1px solid var(--ag-color-border);
+}
+
+[data-vibe-tier='weekday'] .ag-toggle input:checked ~ .ag-toggle__track {
+  background: var(--ag-color-accent);
+  filter: none;
+}
+
+[data-vibe-tier='weekday'] .ag-table--holo thead th {
+  background: var(--ag-color-surface-sunk);
+  color: var(--ag-color-ink-muted);
+  filter: none;
+}
+
+[data-vibe-tier='weekday'] .ag-bob,
+[data-vibe-tier='weekday'] .ag-spin,
+[data-vibe-tier='weekday'] .ag-float { animation: none; }
+
+/* Emojis still hidden through weekday */
+[data-vibe-tier='weekday'] .ag-emoji,
+[data-vibe-tier='weekday'] .ag-card__emoji,
+[data-vibe-tier='weekday'] .ag-alert__icon { display: none; }
+[data-vibe-tier='weekday'] .ag-alert { grid-template-columns: 1fr auto; }
+
+/* ================================================
+   ★ AFTERHOURS TIER OVERRIDES ★
+   Applied by JS at vibe 0.70–0.85. The bridge between Studio and Party.
+   Stickers rotate, cards hover-tilt, foil shimmer is real — but fonts
+   are still Fraunces/Inter (Baloo swap is Party's move). This is
+   "party outside the door" — audible, not in your face.
+   ================================================ */
+[data-vibe-tier='afterhours'] .ag-sticker {
+  background: var(--ag-white);
+  color: var(--ag-grape-800);
+  border: 2px solid var(--ag-cloud-2);
+  box-shadow: 0 3px 0 rgba(42, 10, 61, 0.12), var(--ag-shadow-sm);
+  transform: rotate(-2deg);
+  border-radius: var(--ag-radius-md);
+}
+[data-vibe-tier='afterhours'] .ag-sticker:hover { transform: rotate(0deg) scale(1.03); }
+
+[data-vibe-tier='afterhours'] .ag-card:hover {
+  transform: translateY(-4px) rotate(-0.3deg);
+}
+
+[data-vibe-tier='afterhours'] .ag-card__title {
+  font-weight: var(--ag-weight-bold);
+}

@@ -333,9 +333,13 @@
         v = Math.max(0, Math.min(1, +v));
         root.style.setProperty('--ag-vibe', v.toFixed(2));
         root.style.setProperty('--ag-vibe-anim-play', v < 0.05 ? 'paused' : 'running');
-        let tier = 'mid';
-        if (v <= 0.1) tier = 'calm';
-        else if (v >= 0.85) tier = 'party';
+        // 5 categorical tiers, in ascending intensity
+        let tier;
+        if      (v <= 0.10) tier = 'calm';
+        else if (v <= 0.40) tier = 'weekday';
+        else if (v <= 0.70) tier = 'studio';
+        else if (v <  0.85) tier = 'afterhours';
+        else                tier = 'party';
         root.setAttribute('data-vibe-tier', tier);
         readout.textContent = v.toFixed(2);
         slider.value = v;
