@@ -47,6 +47,14 @@
   --ag-cloud-2:   #ffeaf7;
   --ag-white:     #ffffff;
 
+  /* "Anchor" restrained hues used at low vibe.
+     Everything vibe-interpolates FROM these TOWARD the neon primitives. */
+  --ag-anchor-accent:      #6a1e52;   /* deep plum — reads as a mature CTA */
+  --ag-anchor-accent-hover:#4d1339;
+  --ag-anchor-grad-a:      #3d1657;   /* grape-700 */
+  --ag-anchor-grad-b:      #2a0a3d;   /* grape-800 */
+  --ag-anchor-grad-c:      #150322;   /* grape-950 */
+
   /* Signal colors — tuned to sit next to gradients without clashing */
   --ag-success-500: #1f9d6b;
   --ag-success-100: #d4f2e3;
@@ -92,24 +100,30 @@
     var(--ag-lime), var(--ag-cyan), var(--ag-violet), var(--ag-pink-hot)
   );
 
-  /* Page wash — softer than the unicorn version so text stays readable at low vibe */
-  --ag-grad-page: radial-gradient(circle at 12% 18%, rgba(255, 122, 200, 0.28), transparent 42%),
-    radial-gradient(circle at 88% 12%, rgba(46, 197, 255, 0.22), transparent 40%),
-    radial-gradient(circle at 78% 82%, rgba(155, 77, 255, 0.22), transparent 44%),
-    linear-gradient(135deg, #fff8fc 0%, #f7f0fc 50%, #f0f9fd 100%);
+  /* Page wash — opacity of the dreamy multi-radial scales with vibe.
+     At vibe 0: near-white paper. At vibe 1: full UnicornMagic dreamscape. */
+  --ag-grad-page:
+    radial-gradient(circle at 12% 18%, rgba(255, 122, 200, calc(0.55 * var(--ag-vibe))), transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(46, 197, 255,  calc(0.5  * var(--ag-vibe))), transparent 40%),
+    radial-gradient(circle at 78% 82%, rgba(155, 77, 255,  calc(0.5  * var(--ag-vibe))), transparent 44%),
+    radial-gradient(circle at 22% 88%, rgba(141, 255, 58,  calc(0.42 * var(--ag-vibe))), transparent 42%),
+    linear-gradient(135deg,
+      color-mix(in oklab, #fafafa, #fff0fa calc(var(--ag-vibe) * 100%)) 0%,
+      color-mix(in oklab, #f7f7f9, #f3e8ff calc(var(--ag-vibe) * 100%)) 50%,
+      color-mix(in oklab, #f5f7fa, #e6fbff calc(var(--ag-vibe) * 100%)) 100%);
 
   /* ========================================================
      LAYER 2 — SEMANTIC TOKENS
      Components consume these. Rename freely without touching Layer 1.
      ======================================================== */
 
-  /* Surfaces */
-  --ag-color-bg:            var(--ag-cloud);
-  --ag-color-surface:       var(--ag-white);
-  --ag-color-surface-2:     var(--ag-cloud-2);
-  --ag-color-surface-sunk:  var(--ag-grape-100);
-  --ag-color-border:        var(--ag-grape-200);
-  --ag-color-border-strong: var(--ag-grape-300);
+  /* Surfaces — surface color drifts from clean white → pink-tinted cloud with vibe */
+  --ag-color-bg:            color-mix(in oklab, #fafafa, var(--ag-cloud)   calc(var(--ag-vibe) * 100%));
+  --ag-color-surface:       color-mix(in oklab, #ffffff, var(--ag-cloud)   calc(var(--ag-vibe) * 60%));
+  --ag-color-surface-2:     color-mix(in oklab, #f7f7f9, var(--ag-cloud-2) calc(var(--ag-vibe) * 100%));
+  --ag-color-surface-sunk:  color-mix(in oklab, #eef0f3, var(--ag-grape-100) calc(var(--ag-vibe) * 100%));
+  --ag-color-border:        color-mix(in oklab, #d8d8de, var(--ag-grape-200) calc(var(--ag-vibe) * 100%));
+  --ag-color-border-strong: color-mix(in oklab, #b8b8c2, var(--ag-grape-300) calc(var(--ag-vibe) * 100%));
   --ag-color-overlay:       rgba(21, 3, 34, 0.55);
 
   /* Text */
@@ -118,12 +132,18 @@
   --ag-color-ink-subtle:  var(--ag-grape-500);
   --ag-color-ink-inverse: var(--ag-white);
 
-  /* Accent (brand) — one canonical CTA color, one accent gradient */
-  --ag-color-accent:         var(--ag-pink-hot);
-  --ag-color-accent-hover:   var(--ag-magenta);
-  --ag-color-accent-ink:     var(--ag-white);
-  --ag-color-accent-soft:    #ffe0ef;
-  --ag-color-accent-gradient: var(--ag-grad-unicorn);
+  /* Accent (brand) — interpolates from anchor plum at vibe 0 → hot pink at vibe 1.
+     Gradient built from three color-mixed stops so vibe 0 reads as a calm solid,
+     vibe 1 fully explodes into pink → purple → electric-blue UnicornMagic. */
+  --ag-color-accent:       color-mix(in oklab, var(--ag-anchor-accent),       var(--ag-pink-hot)       calc(var(--ag-vibe) * 100%));
+  --ag-color-accent-hover: color-mix(in oklab, var(--ag-anchor-accent-hover), var(--ag-magenta)        calc(var(--ag-vibe) * 100%));
+  --ag-color-accent-ink:   var(--ag-white);
+  --ag-color-accent-soft:  color-mix(in oklab, #f1e6ee, #ffe0ef                calc(var(--ag-vibe) * 100%));
+
+  --_ag-grad-a: color-mix(in oklab, var(--ag-anchor-grad-a), var(--ag-pink-hot)       calc(var(--ag-vibe) * 100%));
+  --_ag-grad-b: color-mix(in oklab, var(--ag-anchor-grad-b), var(--ag-purple)         calc(var(--ag-vibe) * 100%));
+  --_ag-grad-c: color-mix(in oklab, var(--ag-anchor-grad-c), var(--ag-blue-electric)  calc(var(--ag-vibe) * 100%));
+  --ag-color-accent-gradient: linear-gradient(135deg, var(--_ag-grad-a), var(--_ag-grad-b), var(--_ag-grad-c));
 
   /* Status */
   --ag-color-success:      var(--ag-success-500);
@@ -193,7 +213,7 @@
   /* ========================================================
      RADII — the vibe dial scales these
      ======================================================== */
-  --ag-radius-scale: calc(0.6 + var(--ag-vibe) * 0.4); /* 0.6x → 1.0x */
+  --ag-radius-scale: calc(0.35 + var(--ag-vibe) * 1.05); /* 0.35x @ boardroom → 1.4x @ rave */
   --ag-radius-xs:   calc(0.25rem * var(--ag-radius-scale));
   --ag-radius-sm:   calc(0.5rem  * var(--ag-radius-scale));
   --ag-radius-md:   calc(0.9rem  * var(--ag-radius-scale));
@@ -260,17 +280,18 @@
   /* Derived scalars — components consume these, not --ag-vibe directly */
   --ag-vibe-sparkle-opacity: var(--ag-vibe);
   --ag-vibe-glow-strength:   var(--ag-vibe);
-  --ag-vibe-gradient-sat:    calc(60% + var(--ag-vibe) * 80%);    /* 60% → 140% */
-  --ag-vibe-motion-amp:      calc(0.4 + var(--ag-vibe) * 0.8);    /* 0.4x → 1.2x */
+  --ag-vibe-gradient-sat:    calc(30% + var(--ag-vibe) * 120%);   /* 30% @ 0 → 150% @ 1 */
+  --ag-vibe-motion-amp:      calc(0.2 + var(--ag-vibe) * 1.1);    /* 0.2x → 1.3x */
   --ag-vibe-anim-play:       running;   /* toggled to 'paused' at vibe 0 */
 }
 
 /* Vibe presets — apply as class or data-attribute on any element */
-[data-vibe='boardroom'] { --ag-vibe: 0.15; --ag-vibe-anim-play: paused; }
-[data-vibe='weekday']   { --ag-vibe: 0.35; }
+[data-vibe='boardroom'] { --ag-vibe: 0;    --ag-vibe-anim-play: paused; }
+[data-vibe='weekday']   { --ag-vibe: 0.3; }
 [data-vibe='studio']    { --ag-vibe: 0.55; }
 [data-vibe='afterhours']{ --ag-vibe: 0.8; }
 [data-vibe='rave']      { --ag-vibe: 1; }
+[data-vibe='unicorn']   { --ag-vibe: 1; }
 
 /* ============================================================
    THEMES — semantic remaps only. Never touches Layer 1.

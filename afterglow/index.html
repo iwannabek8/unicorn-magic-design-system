@@ -101,14 +101,14 @@
     <div class="vibe-panel" role="region" aria-label="Vibe controls">
       <div class="vibe-panel__label">
         <label for="vibe-slider" style="font-weight: var(--ag-weight-semi);">Vibe</label>
-        <input id="vibe-slider" class="vibe-panel__slider" type="range" min="0" max="1" step="0.01" value="0.5" />
-        <span id="vibe-readout" class="vibe-panel__readout">0.50</span>
+        <input id="vibe-slider" class="vibe-panel__slider" type="range" min="0" max="1" step="0.01" value="0.55" />
+        <span id="vibe-readout" class="vibe-panel__readout">0.55</span>
         <div class="vibe-panel__presets" role="group" aria-label="Vibe presets">
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.15">Boardroom</button>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.35">Weekday</button>
+          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0">Boardroom</button>
+          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.3">Weekday</button>
           <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.55">Studio</button>
           <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="0.8">Afterhours</button>
-          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="1">Rave</button>
+          <button class="ag-btn ag-btn--ghost ag-btn--sm" data-vibe-preset="1">UnicornMagic 🦄</button>
         </div>
       </div>
       <div class="vibe-panel__theme">
@@ -532,6 +532,11 @@
         v = Math.max(0, Math.min(1, +v));
         root.style.setProperty('--ag-vibe', v.toFixed(2));
         root.style.setProperty('--ag-vibe-anim-play', v < 0.05 ? 'paused' : 'running');
+        // Threshold tier — flips fonts and other categorical switches
+        let tier = 'mid';
+        if (v <= 0.1) tier = 'calm';
+        else if (v >= 0.85) tier = 'party';
+        root.setAttribute('data-vibe-tier', tier);
         readout.textContent = v.toFixed(2);
         slider.value = v;
         localStorage.setItem('ag-vibe', v);
@@ -550,11 +555,11 @@
       themeSel.addEventListener('change', (e) => setTheme(e.target.value));
 
       // Restore
-      setVibe(localStorage.getItem('ag-vibe') ?? 0.5);
+      setVibe(localStorage.getItem('ag-vibe') ?? 0.55);
       setTheme(localStorage.getItem('ag-theme') || '');
 
       // Keyboard shortcuts
-      const presets = [0.15, 0.35, 0.55, 0.8, 1];
+      const presets = [0, 0.3, 0.55, 0.8, 1];
       const themes = ['', 'twilight', 'highcontrast'];
       let vi = 2, ti = 0;
       window.addEventListener('keydown', (e) => {

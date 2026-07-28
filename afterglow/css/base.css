@@ -3,7 +3,7 @@
    Reset, typography, canvas. Reads only from semantic tokens.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
 *,
 *::before,
@@ -26,6 +26,15 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  transition: background-color var(--ag-motion-transition);
+}
+
+/* Threshold font swap — at the top of the dial the whole page
+   flips into full UnicornMagic bubbly mode: Baloo 2 + Quicksand.
+   Set by the vibe slider JS on <html>. */
+[data-vibe-tier='party'] {
+  --ag-font-display: 'Baloo 2', 'Fraunces', ui-serif, Georgia, serif;
+  --ag-font-body:    'Quicksand', 'Inter', system-ui, sans-serif;
 }
 
 /* Display headings use Fraunces variable axes — the "grown-up but fun" secret */
@@ -46,11 +55,13 @@ h4 { font-size: var(--ag-text-xl); }
 h5 { font-size: var(--ag-text-lg); }
 h6 { font-size: var(--ag-text-md); text-transform: uppercase; letter-spacing: var(--ag-tracking-wider); }
 
-/* Vibe dial scales display softness — subtle at boardroom, wonky at rave */
+/* Vibe dial scales display softness AND weight — subtle editorial at boardroom,
+   bubbly at rave. Fraunces axis sweep is the "growing up" secret. */
 h1, h2, h3 {
   font-variation-settings: 'opsz' 144,
-                           'SOFT' calc(20 + var(--ag-vibe) * 80),
-                           'WONK' 0;
+                           'SOFT' calc(0 + var(--ag-vibe) * 100),
+                           'WONK' calc(var(--ag-vibe) * 1);
+  font-weight: calc(500 + var(--ag-vibe) * 300);
 }
 
 p { max-width: 68ch; }
@@ -96,15 +107,16 @@ hr {
   color: var(--ag-color-accent-ink);
 }
 
-/* Scrollbar — restrained gradient, not a candy stick */
+/* Scrollbar — starts restrained, gradient bleeds in with vibe */
 ::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-track { background: var(--ag-color-surface-sunk); }
 ::-webkit-scrollbar-thumb {
-  background: var(--ag-color-border-strong);
+  background: var(--ag-color-accent-gradient);
+  filter: saturate(var(--ag-vibe-gradient-sat));
   border-radius: var(--ag-radius-pill);
   border: 3px solid var(--ag-color-surface-sunk);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--ag-color-accent); }
+::-webkit-scrollbar-thumb:hover { filter: saturate(calc(var(--ag-vibe-gradient-sat) + 30%)); }
 
 /* --------------------------------------------------------
    Layout primitives
