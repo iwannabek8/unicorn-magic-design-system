@@ -217,3 +217,39 @@ hr {
 @media (prefers-reduced-transparency: reduce) {
   :root { --ag-grad-page: var(--ag-color-bg); }
 }
+
+/* ============================================================
+   TIER-CROSSING TRANSITIONS
+   The vibe dial flips a few things categorically at each tier
+   boundary (calm ↔ weekday ↔ studio ↔ afterhours ↔ party).
+   Adding a shared cross-fade turns those flips into smooth reveals
+   instead of jump cuts, which is what makes the mid-range feel
+   continuous when you drag the slider through 0.30 → 0.55.
+   ============================================================ */
+.ag-btn, .ag-card, .ag-sticker, .ag-nav, .ag-nav__brand,
+.ag-divider, .ag-swatch-tile, .ag-progress__bar,
+.ag-badge, .ag-badge__dot, .ag-toggle__track,
+.ag-tab, .ag-tab[aria-selected='true'],
+.ag-text-gradient, .ag-text-holo, .ag-table thead th,
+.ag-alert, .ag-emoji, .ag-card__emoji, .ag-alert__icon {
+  transition:
+    background        400ms var(--ag-ease-standard),
+    background-image  400ms var(--ag-ease-standard),
+    background-color  400ms var(--ag-ease-standard),
+    color             400ms var(--ag-ease-standard),
+    border-color      400ms var(--ag-ease-standard),
+    border-width      400ms var(--ag-ease-standard),
+    border-radius     400ms var(--ag-ease-standard),
+    filter            400ms var(--ag-ease-standard),
+    opacity           400ms var(--ag-ease-standard),
+    box-shadow        400ms var(--ag-ease-standard),
+    text-shadow       400ms var(--ag-ease-standard),
+    transform         var(--ag-motion-transition);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ag-btn, .ag-card, .ag-sticker, .ag-nav, .ag-nav__brand,
+  .ag-divider, .ag-swatch-tile, .ag-progress__bar,
+  .ag-badge, .ag-toggle__track, .ag-tab,
+  .ag-text-gradient, .ag-text-holo, .ag-alert,
+  .ag-emoji, .ag-card__emoji, .ag-alert__icon { transition: none !important; }
+}

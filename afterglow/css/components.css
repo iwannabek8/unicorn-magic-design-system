@@ -985,9 +985,13 @@ kbd, .ag-kbd {
 /* Decorative emojis are hidden entirely at calm tier.
    Mark any decorative emoji with <span class="ag-emoji" aria-hidden="true">…</span>.
    Card emojis and alert icons are already semantically decorative — hidden too. */
+/* Decorative emojis are hidden entirely at calm tier.
+   Mark any decorative emoji with <span class="ag-emoji" aria-hidden="true">…</span>.
+   Card emojis and alert icons are already semantically decorative — hidden too.
+   Using opacity (not display) so the reveal cross-fades with the tier boundary. */
 [data-vibe-tier='calm'] .ag-emoji,
 [data-vibe-tier='calm'] .ag-card__emoji,
-[data-vibe-tier='calm'] .ag-alert__icon { display: none; }
+[data-vibe-tier='calm'] .ag-alert__icon { opacity: 0; pointer-events: none; }
 [data-vibe-tier='calm'] .ag-alert { grid-template-columns: 1fr auto; }
 
 /* Focus ring stays visible — accessibility trumps aesthetic */
@@ -1115,10 +1119,10 @@ kbd, .ag-kbd {
 [data-vibe-tier='weekday'] .ag-spin,
 [data-vibe-tier='weekday'] .ag-float { animation: none; }
 
-/* Emojis still hidden through weekday */
+/* Emojis still hidden through weekday — opacity fade, not display flip */
 [data-vibe-tier='weekday'] .ag-emoji,
 [data-vibe-tier='weekday'] .ag-card__emoji,
-[data-vibe-tier='weekday'] .ag-alert__icon { display: none; }
+[data-vibe-tier='weekday'] .ag-alert__icon { opacity: 0; pointer-events: none; }
 [data-vibe-tier='weekday'] .ag-alert { grid-template-columns: 1fr auto; }
 
 /* ================================================
